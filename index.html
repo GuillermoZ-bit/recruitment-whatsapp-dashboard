@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RecruitPulse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Scrollbar sutil para las columnas */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+<body class="bg-[#F8FAFC] text-slate-800 flex h-screen overflow-hidden">
+
+    <!-- SIDEBAR IZQUIERDO -->
+    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between hidden md:flex shrink-0">
+        <div>
+            <!-- Logo -->
+            <div class="h-16 flex items-center px-6 border-b border-slate-100 gap-3">
+                <div
+                    class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold shadow-sm">
+                    RP
+                </div>
+                <span class="font-bold text-lg tracking-tight text-slate-900">RecruitPulse</span>
+            </div>
+
+            <!-- Navegación -->
+            <nav class="p-4 space-y-1">
+                <button onclick="cambiarVista('kanban')" id="nav-kanban"
+                    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2">
+                        </path>
+                    </svg>
+                    Tablero Kanban
+                </button>
+                <button onclick="cambiarVista('descartados')" id="nav-descartados"
+                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
+                            </path>
+                        </svg>
+                        No continúan
+                    </div>
+                    <span id="badge-descartados"
+                        class="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full">0</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Perfil Inferior -->
+        <div class="p-4 border-t border-slate-100">
+            <div class="bg-slate-50 p-3 rounded-xl flex items-center gap-3">
+                <div
+                    class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm">
+                    RH
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-semibold text-slate-800 truncate">Equipo RH</p>
+                    <p class="text-xs text-slate-500 truncate">Reclutador Admin</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+
+        <!-- TOPBAR -->
+        <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
+            <div class="flex items-center gap-4 flex-1 max-w-md">
+                <div class="relative w-full">
+                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" id="buscador" placeholder="Buscar candidato por nombre, puesto o teléfono..."
+                        class="w-full pl-9 pr-4 py-2 bg-slate-100 border-transparent focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-lg text-sm outline-none transition">
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span
+                    class="text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full font-medium flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> En vivo
+                </span>
+                <button onclick="abrirModalNuevo()"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm flex items-center gap-2 transition">
+                    <span>+ Añadir Candidato</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- ÁREA DE TRABAJO -->
+        <main class="flex-1 overflow-y-auto p-6">
+
+            <!-- Encabezado de Sección -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                        <h1 class="text-2xl font-bold text-slate-900" id="titulo-vista">Flujo de Reclutamiento</h1>
+                    </div>
+                    <p class="text-sm text-slate-500 mt-0.5">Gestiona y toma decisiones sobre postulaciones activas de
+                        WhatsApp en tiempo real.</p>
+                </div>
+            </div>
+
+            <!-- Píldoras de Filtro por Puesto -->
+            <div class="flex flex-wrap items-center gap-2 mb-6" id="filtros-puestos">
+                <!-- Se generan dinámicamente -->
+            </div>
+
+            <!-- TABLERO KANBAN (3 COLUMNAS) -->
+            <div id="vista-kanban" class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+
+                <!-- Columna 1: Nuevos Postulantes -->
+                <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
+                    <div class="flex items-center justify-between mb-4 px-1">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                            <h2 class="font-semibold text-slate-800 text-sm">Nuevos Postulantes</h2>
+                        </div>
+                        <span id="count-nuevo"
+                            class="bg-white text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm border border-slate-200/60">0</span>
+                    </div>
+                    <div id="col-nuevo" class="space-y-3 min-h-[200px]"></div>
+                </div>
+
+                <!-- Columna 2: En Entrevista -->
+                <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
+                    <div class="flex items-center justify-between mb-4 px-1">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            <h2 class="font-semibold text-slate-800 text-sm">En Entrevista</h2>
+                        </div>
+                        <span id="count-entrevista"
+                            class="bg-white text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm border border-slate-200/60">0</span>
+                    </div>
+                    <div id="col-entrevista" class="space-y-3 min-h-[200px]"></div>
+                </div>
+
+                <!-- Columna 3: Aprobados / Continúan -->
+                <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
+                    <div class="flex items-center justify-between mb-4 px-1">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                            <h2 class="font-semibold text-slate-800 text-sm">Aprobados / Continúan</h2>
+                        </div>
+                        <span id="count-aprobado"
+                            class="bg-white text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm border border-slate-200/60">0</span>
+                    </div>
+                    <div id="col-aprobado" class="space-y-3 min-h-[200px]"></div>
+                </div>
+
+            </div>
+
+            <!-- VISTA DE DESCARTADOS (Oculta por defecto) -->
+            <div id="vista-descartados" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+        </main>
+    </div>
+
+    <!-- MODAL DETALLE Y NOTAS DE ENTREVISTA -->
+    <div id="modal-detalle"
+        class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-slate-100">
+            <div class="flex justify-between items-start mb-4">
+                <div>
+                    <span id="det-puesto"
+                        class="text-xs font-semibold px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-700">Puesto</span>
+                    <h3 id="det-nombre" class="text-xl font-bold text-slate-900 mt-2">Nombre del Candidato</h3>
+                    <a id="det-whatsapp" href="#" target="_blank"
+                        class="text-sm text-emerald-600 hover:underline font-medium inline-flex items-center gap-1 mt-1">
+                        📱 Abrir chat en WhatsApp
+                    </a>
+                </div>
+                <button onclick="cerrarModalDetalle()"
+                    class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            </div>
+
+            <div class="space-y-3 bg-slate-50 p-4 rounded-xl text-sm border border-slate-100 mb-4">
+                <div>
+                    <span class="text-slate-400 text-xs uppercase font-semibold">Experiencia reportada:</span>
+                    <p id="det-experiencia" class="text-slate-700 mt-0.5 font-medium">-</p>
+                </div>
+                <div>
+                    <span class="text-slate-400 text-xs uppercase font-semibold">Disponibilidad:</span>
+                    <p id="det-disponibilidad" class="text-slate-700 mt-0.5 font-medium">-</p>
+                </div>
+            </div>
+
+            <div class="mb-5">
+                <label class="block text-xs font-semibold uppercase text-slate-500 mb-1.5">Notas de Entrevista /
+                    Comentarios RH:</label>
+                <textarea id="det-notas" rows="3"
+                    placeholder="Escribe aquí observaciones de la entrevista, sueldo acordado o fecha de ingreso..."
+                    class="w-full border border-slate-200 rounded-xl p-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"></textarea>
+            </div>
+
+            <div class="flex justify-between items-center gap-3">
+                <button onclick="guardarNotas()"
+                    class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-xl text-sm transition">
+                    Guardar Notas
+                </button>
+                <button onclick="cerrarModalDetalle()"
+                    class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-xl text-sm transition">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL AÑADIR CANDIDATO MANUAL -->
+    <div id="modal-nuevo"
+        class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-slate-900">Añadir Candidato Manualmente</h3>
+                <button onclick="cerrarModalNuevo()"
+                    class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            </div>
+            <form id="form-nuevo" class="space-y-3 text-sm">
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Nombre completo</label>
+                    <input type="text" id="new-nombre" required
+                        class="w-full border border-slate-200 rounded-lg p-2.5 outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Teléfono (con código país, ej. 5281...)</label>
+                    <input type="text" id="new-telefono" required
+                        class="w-full border border-slate-200 rounded-lg p-2.5 outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Puesto</label>
+                    <input type="text" id="new-puesto" placeholder="Ej. Cocina, Oficina, Atención al Cliente" required
+                        class="w-full border border-slate-200 rounded-lg p-2.5 outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Experiencia / Resumen</label>
+                    <input type="text" id="new-experiencia" required
+                        class="w-full border border-slate-200 rounded-lg p-2.5 outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Disponibilidad</label>
+                    <input type="text" id="new-disponibilidad" value="Inmediata"
+                        class="w-full border border-slate-200 rounded-lg p-2.5 outline-none focus:border-indigo-500">
+                </div>
+                <div class="pt-2 flex gap-2">
+                    <button type="submit"
+                        class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg">Guardar
+                        Candidato</button>
+                    <button type="button" onclick="cerrarModalNuevo()"
+                        class="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-lg">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- LÓGICA DE FIREBASE Y KANBAN -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // PEGA AQUÍ TUS CREDENCIALES REALES DE FIREBASE
+        const firebaseConfig = {
+            apiKey: "AIzaSyBO6dnSHGTAiebPD-ZPVafMgEkWEjCo780",
+            authDomain: "rh-whatsapp-bot.firebaseapp.com",
+            projectId: "rh-whatsapp-bot",
+            storageBucket: "rh-whatsapp-bot.firebasestorage.app",
+            messagingSenderId: "592998142314",
+            appId: "1:592998142314:web:28d01f990fcea60291d513"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let candidatosGlobal = [];
+        let filtroPuestoActual = "Todos";
+        let textoBusqueda = "";
+        let candidatoSeleccionadoId = null;
+
+        // Colores dinámicos para etiquetas de puesto
+        const coloresPuesto = [
+            "bg-amber-100 text-amber-800",
+            "bg-sky-100 text-sky-800",
+            "bg-emerald-100 text-emerald-800",
+            "bg-purple-100 text-purple-800",
+            "bg-rose-100 text-rose-800"
+        ];
+        function getColorPuesto(puesto) {
+            if (!puesto) return "bg-slate-100 text-slate-700";
+            let hash = 0;
+            for (let i = 0; i < puesto.length; i++) hash = puesto.charCodeAt(i) + ((hash << 5) - hash);
+            return coloresPuesto[Math.abs(hash) % coloresPuesto.length];
+        }
+
+        // Escuchar Firestore en tiempo real
+        onSnapshot(collection(db, "candidatos"), (snapshot) => {
+            candidatosGlobal = [];
+            snapshot.forEach((docSnap) => {
+                candidatosGlobal.push({ id: docSnap.id, ...docSnap.data() });
+            });
+            renderizarFiltros();
+            renderizarTablero();
+        });
+
+        // Renderizar píldoras de filtro por puesto
+        function renderizarFiltros() {
+            const contenedor = document.getElementById("filtros-puestos");
+            const activos = candidatosGlobal.filter(c => c.estatus !== 'descartado');
+
+            const conteoPuestos = {};
+            activos.forEach(c => {
+                const p = c.puesto || "General";
+                conteoPuestos[p] = (conteoPuestos[p] || 0) + 1;
+            });
+
+            let html = `
+                <button onclick="seleccionarFiltro('Todos')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition flex items-center gap-2 ${filtroPuestoActual === 'Todos' ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'}">
+                    Todos <span class="px-1.5 py-0.2 rounded-full text-[10px] ${filtroPuestoActual === 'Todos' ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-600'}">${activos.length}</span>
+                </button>
+            `;
+
+            Object.keys(conteoPuestos).forEach(puesto => {
+                const activo = filtroPuestoActual === puesto;
+                html += `
+                    <button onclick="seleccionarFiltro('${puesto}')" class="px-3.5 py-1.5 rounded-full text-xs font-semibold transition flex items-center gap-2 ${activo ? 'bg-indigo-600 text-white shadow-xs' : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'}">
+                        <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                        ${puesto} <span class="px-1.5 py-0.2 rounded-full text-[10px] ${activo ? 'bg-indigo-500 text-white' : 'bg-slate-100 text-slate-600'}">${conteoPuestos[puesto]}</span>
+                    </button>
+                `;
+            });
+            contenedor.innerHTML = html;
+        }
+
+        // Renderizar tarjetas en columnas
+        function renderizarTablero() {
+            const colNuevo = document.getElementById("col-nuevo");
+            const colEntrevista = document.getElementById("col-entrevista");
+            const colAprobado = document.getElementById("col-aprobado");
+            const vistaDescartados = document.getElementById("vista-descartados");
+
+            colNuevo.innerHTML = "";
+            colEntrevista.innerHTML = "";
+            colAprobado.innerHTML = "";
+            vistaDescartados.innerHTML = "";
+
+            let cNuevo = 0, cEntrevista = 0, cAprobado = 0, cDescartado = 0;
+
+            candidatosGlobal.forEach(c => {
+                // Filtro de búsqueda
+                const matchTexto = !textoBusqueda ||
+                    (c.nombre && c.nombre.toLowerCase().includes(textoBusqueda)) ||
+                    (c.puesto && c.puesto.toLowerCase().includes(textoBusqueda)) ||
+                    (c.telefono && c.telefono.includes(textoBusqueda));
+
+                if (!matchTexto) return;
+
+                if (c.estatus === 'descartado') {
+                    cDescartado++;
+                    vistaDescartados.innerHTML += crearTarjetaHTML(c, 'descartado');
+                    return;
+                }
+
+                // Filtro de puesto
+                const puestoCand = c.puesto || "General";
+                if (filtroPuestoActual !== "Todos" && puestoCand !== filtroPuestoActual) return;
+
+                const est = c.estatus || 'nuevo';
+                if (est === 'nuevo') {
+                    cNuevo++;
+                    colNuevo.innerHTML += crearTarjetaHTML(c, 'nuevo');
+                } else if (est === 'entrevista') {
+                    cEntrevista++;
+                    colEntrevista.innerHTML += crearTarjetaHTML(c, 'entrevista');
+                } else {
+                    cAprobado++;
+                    colAprobado.innerHTML += crearTarjetaHTML(c, 'aprobado');
+                }
+            });
+
+            document.getElementById("count-nuevo").textContent = cNuevo;
+            document.getElementById("count-entrevista").textContent = cEntrevista;
+            document.getElementById("count-aprobado").textContent = cAprobado;
+            document.getElementById("badge-descartados").textContent = cDescartado;
+        }
+
+        function crearTarjetaHTML(c, estatus) {
+            const colorTag = getColorPuesto(c.puesto);
+            const siguienteEstatus = estatus === 'nuevo' ? 'entrevista' : 'aprobado';
+            const textoBotonContinuar = estatus === 'aprobado' ? '✓ Contratado' : '✓ Continuar';
+
+            return `
+                <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs hover:shadow-md transition group">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-md ${colorTag}">
+                            ${c.puesto || 'General'}
+                        </span>
+                        ${c.notas_rh ? '<span title="Tiene notas de RH" class="text-xs bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded border border-amber-200">📝 Nota</span>' : ''}
+                    </div>
+
+                    <h3 class="font-bold text-slate-900 text-base mb-1">${c.nombre || 'Sin nombre'}</h3>
+                    
+                    <div class="text-xs text-slate-500 space-y-1 mb-3">
+                        <a href="https://wa.me/${c.telefono}" target="_blank" class="flex items-center gap-1.5 text-slate-600 hover:text-emerald-600 font-medium">
+                            <span>📞</span> ${c.telefono || 'Sin teléfono'}
+                        </a>
+                    </div>
+
+                    <div class="bg-slate-50 p-2.5 rounded-lg text-xs text-slate-600 mb-3 border border-slate-100">
+                        <p class="line-clamp-2">${c.experiencia || 'Sin detalles'} • Disp: ${c.disponibilidad || 'No esp.'}</p>
+                    </div>
+
+                    <div class="flex items-center justify-between mb-3">
+                        <button onclick="abrirModalDetalle('${c.id}')" class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
+                            Ver toda la info &rarr;
+                        </button>
+                    </div>
+
+                    ${estatus !== 'descartado' ? `
+                        <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
+                            <button onclick="cambiarEstatus('${c.id}', '${siguienteEstatus}')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold py-2 px-3 rounded-lg transition text-center">
+                                ${textoBotonContinuar}
+                            </button>
+                            <button onclick="cambiarEstatus('${c.id}', 'descartado')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-semibold py-2 px-3 rounded-lg transition text-center">
+                                &times; No seguir
+                            </button>
+                        </div>
+                    ` : `
+                        <button onclick="cambiarEstatus('${c.id}', 'nuevo')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold py-2 rounded-lg transition">
+                            Restaurar a Nuevos
+                        </button>
+                    `}
+                </div>
+            `;
+        }
+
+        // Funciones globales expuestas al HTML
+        window.seleccionarFiltro = (puesto) => {
+            filtroPuestoActual = puesto;
+            renderizarFiltros();
+            renderizarTablero();
+        };
+
+        document.getElementById("buscador").addEventListener("input", (e) => {
+            textoBusqueda = e.target.value.toLowerCase();
+            renderizarTablero();
+        });
+
+        window.cambiarEstatus = async (id, nuevoEstatus) => {
+            await updateDoc(doc(db, "candidatos", id), { estatus: nuevoEstatus });
+        };
+
+        window.cambiarVista = (vista) => {
+            const kanban = document.getElementById("vista-kanban");
+            const desc = document.getElementById("vista-descartados");
+            const filtros = document.getElementById("filtros-puestos");
+            const titulo = document.getElementById("titulo-vista");
+
+            if (vista === 'kanban') {
+                kanban.classList.remove("hidden");
+                filtros.classList.remove("hidden");
+                desc.classList.add("hidden");
+                titulo.textContent = "Flujo de Reclutamiento";
+                document.getElementById("nav-kanban").className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition";
+                document.getElementById("nav-descartados").className = "w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition";
+            } else {
+                kanban.classList.add("hidden");
+                filtros.classList.add("hidden");
+                desc.classList.remove("hidden");
+                titulo.textContent = "Candidatos Descartados";
+                document.getElementById("nav-descartados").className = "w-full flex items-center justify-between px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition";
+                document.getElementById("nav-kanban").className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition";
+            }
+        };
+
+        // Modales
+        window.abrirModalDetalle = (id) => {
+            const c = candidatosGlobal.find(item => item.id === id);
+            if (!c) return;
+            candidatoSeleccionadoId = id;
+            document.getElementById("det-puesto").textContent = c.puesto || "General";
+            document.getElementById("det-nombre").textContent = c.nombre || "Sin nombre";
+            document.getElementById("det-whatsapp").href = `https://wa.me/${c.telefono}`;
+            document.getElementById("det-experiencia").textContent = c.experiencia || "No especificada";
+            document.getElementById("det-disponibilidad").textContent = c.disponibilidad || "No especificada";
+            document.getElementById("det-notas").value = c.notas_rh || "";
+
+            const modal = document.getElementById("modal-detalle");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        };
+
+        window.cerrarModalDetalle = () => {
+            const modal = document.getElementById("modal-detalle");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        };
+
+        window.guardarNotas = async () => {
+            if (!candidatoSeleccionadoId) return;
+            const notas = document.getElementById("det-notas").value;
+            await updateDoc(doc(db, "candidatos", candidatoSeleccionadoId), { notas_rh: notas });
+            cerrarModalDetalle();
+        };
+
+        window.abrirModalNuevo = () => {
+            const modal = document.getElementById("modal-nuevo");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        };
+
+        window.cerrarModalNuevo = () => {
+            const modal = document.getElementById("modal-nuevo");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        };
+
+        document.getElementById("form-nuevo").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            await addDoc(collection(db, "candidatos"), {
+                nombre: document.getElementById("new-nombre").value,
+                telefono: document.getElementById("new-telefono").value,
+                puesto: document.getElementById("new-puesto").value,
+                experiencia: document.getElementById("new-experiencia").value,
+                disponibilidad: document.getElementById("new-disponibilidad").value,
+                estatus: "nuevo"
+            });
+            e.target.reset();
+            cerrarModalNuevo();
+        });
+    </script>
+</body>
+
+</html>
