@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RecruitPulse - Flujo de Reclutamiento</title>
+    <title>RecruitPulse Enterprise - Portal de Reclutamiento</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -28,154 +28,294 @@
     </style>
 </head>
 
-<body class="bg-[#F8FAFC] text-slate-800 flex h-screen overflow-hidden">
+<body class="bg-[#F8FAFC] text-slate-800 h-screen overflow-hidden">
 
-    <!-- SIDEBAR IZQUIERDO -->
-    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between hidden md:flex shrink-0">
-        <div>
-            <div class="h-16 flex items-center px-6 border-b border-slate-100 gap-3">
-                <div
-                    class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold shadow-sm">
-                    RP
-                </div>
-                <span class="font-bold text-lg tracking-tight text-slate-900">RecruitPulse</span>
-            </div>
-            <nav class="p-4 space-y-1">
-                <button onclick="cambiarVista('kanban')" id="nav-kanban"
-                    class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2">
-                        </path>
-                    </svg>
-                    Tablero Kanban
-                </button>
-                <button onclick="cambiarVista('descartados')" id="nav-descartados"
-                    class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition">
-                    <div class="flex items-center gap-3">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
-                            </path>
-                        </svg>
-                        No continúan
+    <!-- ========================================== -->
+    <!-- PANTALLA 1: LOGIN CORPORATIVO (SPLIT-SCREEN) -->
+    <!-- ========================================== -->
+    <div id="pantalla-login" class="flex h-screen w-full bg-white">
+        <div class="w-full lg:w-1/2 flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-y-auto">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold shadow-sm">
+                        RP
                     </div>
-                    <span id="badge-descartados"
-                        class="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full">0</span>
-                </button>
-            </nav>
-        </div>
-        <div class="p-4 border-t border-slate-100">
-            <div class="bg-slate-50 p-3 rounded-xl flex items-center gap-3">
-                <div
-                    class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm">
-                    RH</div>
-                <div class="overflow-hidden">
-                    <p class="text-sm font-semibold text-slate-800 truncate">Equipo RH</p>
-                    <p class="text-xs text-slate-500 truncate">Reclutador Admin</p>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-lg tracking-tight text-slate-900">RecruitPulse</span>
+                            <span
+                                class="text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Enterprise</span>
+                        </div>
+                        <p class="text-xs text-slate-500">Portal de Reclutamiento</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </aside>
-
-    <!-- CONTENIDO PRINCIPAL -->
-    <div class="flex-1 flex flex-col overflow-hidden">
-
-        <!-- TOPBAR -->
-        <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
-            <div class="flex items-center gap-4 flex-1 max-w-md">
-                <div class="relative w-full">
-                    <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                    <input type="text" id="buscador" placeholder="Buscar candidato por nombre, puesto o teléfono..."
-                        class="w-full pl-9 pr-4 py-2 bg-slate-100 border-transparent focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-lg text-sm outline-none transition">
-                </div>
-            </div>
-            <div class="flex items-center gap-3">
                 <span
-                    class="text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full font-medium flex items-center gap-1.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> En vivo
+                    class="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Sistemas Operativos
                 </span>
-                <button onclick="abrirModalNuevo()"
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm flex items-center gap-2 transition">
-                    <span>+ Añadir Candidato</span>
-                </button>
-            </div>
-        </header>
-
-        <!-- ÁREA DE TRABAJO -->
-        <main class="flex-1 overflow-y-auto p-6">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                <div>
-                    <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
-                        <h1 class="text-2xl font-bold text-slate-900" id="titulo-vista">Flujo de Reclutamiento</h1>
-                    </div>
-                    <p class="text-sm text-slate-500 mt-0.5">Gestiona y toma decisiones sobre postulaciones activas de
-                        WhatsApp en tiempo real.</p>
-                </div>
             </div>
 
-            <div class="flex flex-wrap items-center gap-2 mb-6" id="filtros-puestos"></div>
+            <div class="max-w-md w-full mx-auto my-8">
+                <h1 class="text-3xl font-bold text-slate-900 tracking-tight mb-2">Bienvenido de nuevo</h1>
+                <p class="text-sm text-slate-500 mb-8">Ingresa tus credenciales profesionales para gestionar candidatos,
+                    pipelines y decisiones tácticas.</p>
 
-            <!-- TABLERO KANBAN -->
-            <div id="vista-kanban" class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
-                    <div class="flex items-center justify-between mb-4 px-1">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
-                            <h2 class="font-semibold text-slate-800 text-sm">Nuevos Postulantes</h2>
-                        </div>
-                        <span id="count-nuevo"
-                            class="bg-white text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm border border-slate-200/60">0</span>
-                    </div>
-                    <div id="col-nuevo" class="space-y-3 min-h-[200px]"></div>
+                <div id="login-error"
+                    class="hidden mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium">
+                    Credenciales incorrectas. Verifica tu correo y contraseña.
                 </div>
 
-                <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
-                    <div class="flex items-center justify-between mb-4 px-1">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
-                            <h2 class="font-semibold text-slate-800 text-sm">En Entrevista</h2>
+                <form id="form-login" class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Correo electrónico
+                            profesional</label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-3 text-slate-400">✉️</span>
+                            <input type="email" id="login-email" required placeholder="rh@empresa.com"
+                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 outline-none transition">
                         </div>
-                        <span id="count-entrevista"
-                            class="bg-white text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm border border-slate-200/60">0</span>
                     </div>
-                    <div id="col-entrevista" class="space-y-3 min-h-[200px]"></div>
-                </div>
 
-                <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
-                    <div class="flex items-center justify-between mb-4 px-1">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                            <h2 class="font-semibold text-slate-800 text-sm">Aprobados / Continúan</h2>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Contraseña</label>
+                        <div class="relative">
+                            <span class="absolute left-3.5 top-3 text-slate-400">🔒</span>
+                            <input type="password" id="login-password" required placeholder="••••••••••••"
+                                class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 outline-none transition">
                         </div>
-                        <span id="count-aprobado"
-                            class="bg-white text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm border border-slate-200/60">0</span>
                     </div>
-                    <div id="col-aprobado" class="space-y-3 min-h-[200px]"></div>
+
+                    <button type="submit" id="btn-login-submit"
+                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl text-sm shadow-sm transition flex items-center justify-center gap-2">
+                        <span>Iniciar sesión</span>
+                        <span>&rarr;</span>
+                    </button>
+                </form>
+
+                <div class="mt-6 bg-slate-50 border border-slate-100 rounded-xl p-3.5 flex items-start gap-3">
+                    <span class="text-slate-400 mt-0.5">🛡️</span>
+                    <p class="text-xs text-slate-500 leading-relaxed">
+                        Acceso exclusivo para personal autorizado de Talento Humano.
+                    </p>
                 </div>
             </div>
 
-            <div id="vista-descartados" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-        </main>
+            <div class="text-xs text-slate-400 flex justify-between items-center">
+                <span>&copy; 2026 RecruitPulse</span>
+                <span>Conectado con Firebase Auth</span>
+            </div>
+        </div>
+
+        <div
+            class="hidden lg:flex lg:w-1/2 bg-[#0F172A] text-white p-12 flex-col justify-between relative overflow-hidden">
+            <div class="flex justify-between items-center z-10">
+                <span
+                    class="bg-slate-800/80 border border-slate-700 text-xs px-3 py-1.5 rounded-full flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Pipeline en vivo • WhatsApp
+                    Bot
+                </span>
+                <span class="text-xs text-slate-400">⚡ Sincronización en tiempo real</span>
+            </div>
+            <div class="z-10 max-w-md">
+                <h2 class="text-2xl font-bold mb-2">Toma decisiones de talento en tiempo real.</h2>
+                <p class="text-sm text-slate-400 leading-relaxed">Clasifica, evalúa y da seguimiento inmediato a los
+                    candidatos captados automáticamente por WhatsApp.</p>
+            </div>
+        </div>
     </div>
 
-    <!-- MODAL DETALLE AVANZADO (Estilo RecruitPulse) -->
-    <div id="modal-detalle" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden items-center justify-end z-50">
-        <div
-            class="bg-white h-full max-w-xl w-full p-6 shadow-2xl flex flex-col justify-between overflow-y-auto transform transition-transform">
+    <!-- ========================================== -->
+    <!-- PANTALLA 2: DASHBOARD KANBAN -->
+    <!-- ========================================== -->
+    <div id="pantalla-dashboard" class="hidden flex h-screen overflow-hidden w-full">
+
+        <aside class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between hidden md:flex shrink-0">
             <div>
-                <!-- Cabecera del Candidato -->
+                <div class="h-16 flex items-center px-6 border-b border-slate-100 gap-3">
+                    <div
+                        class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold shadow-sm">
+                        RP
+                    </div>
+                    <span class="font-bold text-lg tracking-tight text-slate-900">RecruitPulse</span>
+                </div>
+                <nav class="p-4 space-y-1">
+                    <button onclick="cambiarVista('kanban')" id="nav-kanban"
+                        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2">
+                            </path>
+                        </svg>
+                        Tablero Kanban
+                    </button>
+                    <button onclick="cambiarVista('descartados')" id="nav-descartados"
+                        class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition">
+                        <div class="flex items-center gap-3">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636">
+                                </path>
+                            </svg>
+                            No continúan
+                        </div>
+                        <span id="badge-descartados"
+                            class="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full">0</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- PERFIL DE USUARIO INTERACTIVO (CLIC PARA CONFIGURAR) -->
+            <div class="p-4 border-t border-slate-100 space-y-2">
+                <div onclick="abrirModalUsuario()"
+                    class="bg-slate-50 hover:bg-slate-100 p-3 rounded-xl cursor-pointer transition group border border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <div id="user-avatar"
+                            class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm shrink-0">
+                            RH</div>
+                        <div class="overflow-hidden flex-1">
+                            <p id="user-nombre"
+                                class="text-sm font-semibold text-slate-800 truncate group-hover:text-indigo-600 transition">
+                                Cargando...</p>
+                            <p id="user-rol" class="text-xs text-slate-500 truncate">Reclutador</p>
+                        </div>
+                        <span class="text-slate-400 text-xs">⚙️</span>
+                    </div>
+                </div>
+                <button onclick="cerrarSesion()"
+                    class="w-full text-xs font-semibold text-rose-600 hover:bg-rose-50 py-1.5 rounded-lg transition flex items-center justify-center gap-1.5 border border-rose-100 bg-white">
+                    <span>Cerrar sesión</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-4 flex-1 max-w-md">
+                    <div class="relative w-full">
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input type="text" id="buscador" placeholder="Buscar candidato por nombre, puesto o teléfono..."
+                            class="w-full pl-9 pr-4 py-2 bg-slate-100 border-transparent focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-lg text-sm outline-none transition">
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span
+                        class="text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full font-medium flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> En vivo
+                    </span>
+                    <button onclick="abrirModalNuevo()"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm flex items-center gap-2 transition">
+                        <span>+ Añadir Candidato</span>
+                    </button>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                            <h1 class="text-2xl font-bold text-slate-900" id="titulo-vista">Flujo de Reclutamiento</h1>
+                        </div>
+                        <p class="text-sm text-slate-500 mt-0.5">Gestiona y toma decisiones sobre postulaciones activas
+                            de WhatsApp en tiempo real.</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2 mb-6" id="filtros-puestos"></div>
+
+                <div id="vista-kanban" class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                    <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
+                        <div class="flex items-center justify-between mb-4 px-1">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
+                                <h2 class="font-semibold text-slate-800 text-sm">Nuevos Postulantes</h2>
+                            </div>
+                            <span id="count-nuevo"
+                                class="bg-white text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm border border-slate-200/60">0</span>
+                        </div>
+                        <div id="col-nuevo" class="space-y-3 min-h-[200px]"></div>
+                    </div>
+
+                    <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
+                        <div class="flex items-center justify-between mb-4 px-1">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                                <h2 class="font-semibold text-slate-800 text-sm">En Entrevista</h2>
+                            </div>
+                            <span id="count-entrevista"
+                                class="bg-white text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm border border-slate-200/60">0</span>
+                        </div>
+                        <div id="col-entrevista" class="space-y-3 min-h-[200px]"></div>
+                    </div>
+
+                    <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
+                        <div class="flex items-center justify-between mb-4 px-1">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                                <h2 class="font-semibold text-slate-800 text-sm">Aprobados / Continúan</h2>
+                            </div>
+                            <span id="count-aprobado"
+                                class="bg-white text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm border border-slate-200/60">0</span>
+                        </div>
+                        <div id="col-aprobado" class="space-y-3 min-h-[200px]"></div>
+                    </div>
+                </div>
+
+                <div id="vista-descartados" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIGURACIÓN DE USUARIO -->
+    <div id="modal-usuario"
+        class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold text-slate-900">Configuración de Perfil</h3>
+                <button onclick="cerrarModalUsuario()"
+                    class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
+            </div>
+            <form id="form-usuario" class="space-y-4 text-sm">
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Nombre completo</label>
+                    <input type="text" id="config-nombre" required
+                        class="w-full border border-slate-200 rounded-lg p-2.5 outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Rol / Cargo</label>
+                    <input type="text" id="config-rol" required
+                        class="w-full border border-slate-200 rounded-lg p-2.5 outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block font-medium text-slate-700 mb-1">Correo electrónico</label>
+                    <input type="email" id="config-email" disabled
+                        class="w-full bg-slate-100 border border-slate-200 rounded-lg p-2.5 text-slate-500 cursor-not-allowed">
+                </div>
+                <div class="pt-2 flex gap-2">
+                    <button type="submit"
+                        class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg transition">Guardar
+                        Cambios</button>
+                    <button type="button" onclick="cerrarModalUsuario()"
+                        class="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-lg transition">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DETALLE AVANZADO -->
+    <div id="modal-detalle" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden items-center justify-end z-50">
+        <div class="bg-white h-full max-w-xl w-full p-6 shadow-2xl flex flex-col justify-between overflow-y-auto">
+            <div>
                 <div class="flex justify-between items-start border-b border-slate-100 pb-5 mb-5">
                     <div class="flex items-start gap-3">
                         <div id="det-avatar"
                             class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-lg shrink-0">
-                            MV
-                        </div>
+                            MV</div>
                         <div>
                             <div class="flex items-center gap-2">
                                 <h3 id="det-nombre" class="text-xl font-bold text-slate-900">Nombre</h3>
@@ -189,7 +329,6 @@
                         class="text-slate-400 hover:text-slate-600 text-2xl font-bold">&times;</button>
                 </div>
 
-                <!-- Barra de Acciones y Cambio de Etapa -->
                 <div
                     class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3.5 rounded-xl border border-slate-100 mb-6">
                     <div class="flex items-center gap-2">
@@ -201,15 +340,12 @@
                             <option value="aprobado">Aprobados / Continúan</option>
                         </select>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <a id="det-whatsapp-btn" href="#" target="_blank"
-                            class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
-                            <span>📱 WhatsApp</span>
-                        </a>
-                    </div>
+                    <a id="det-whatsapp-btn" href="#" target="_blank"
+                        class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                        <span>📱 WhatsApp</span>
+                    </a>
                 </div>
 
-                <!-- Cuadrícula de Datos Clave -->
                 <div class="grid grid-cols-2 gap-3 mb-6">
                     <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
                         <span class="text-[11px] font-semibold text-slate-400 uppercase">Disponibilidad</span>
@@ -221,7 +357,6 @@
                     </div>
                 </div>
 
-                <!-- Experiencia Laboral -->
                 <div class="mb-6">
                     <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">Experiencia Laboral /
                         Resumen</h4>
@@ -230,7 +365,6 @@
                     </div>
                 </div>
 
-                <!-- Notas de Entrevista / Comentarios RH -->
                 <div class="mb-6">
                     <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Notas de
                         Entrevista / Seguimiento RH</label>
@@ -244,13 +378,12 @@
                 </div>
             </div>
 
-            <!-- Botones de Decisión Inferiores -->
             <div class="border-t border-slate-100 pt-4 flex items-center gap-3 mt-4">
                 <button onclick="accionBotonModal('descartado')"
                     class="flex-1 bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold py-3 px-4 rounded-xl text-sm transition flex items-center justify-center gap-2">
                     <span>&times; Descartar / No seguir</span>
                 </button>
-                <button onclick="accionBotonModal('siguiente')" id="btn-continuar-modal"
+                <button onclick="accionBotonModal('siguiente')"
                     class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-xl text-sm transition flex items-center justify-center gap-2 shadow-sm">
                     <span>✓ Continuar proceso</span>
                 </button>
@@ -304,10 +437,11 @@
         </div>
     </div>
 
-    <!-- LÓGICA DE FIREBASE Y KANBAN -->
+    <!-- SCRIPTS DE FIREBASE AUTH + FIRESTORE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, doc, updateDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc, addDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // PEGA TUS CREDENCIALES DE FIREBASE AQUÍ
         const firebaseConfig = {
@@ -320,12 +454,130 @@
         };
 
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const db = getFirestore(app);
 
+        let unsubscribeCandidatos = null;
         let candidatosGlobal = [];
         let filtroPuestoActual = "Todos";
         let textoBusqueda = "";
         let candidatoSeleccionadoId = null;
+        let usuarioActualNombre = "RH";
+        let usuarioActualEmail = "";
+
+        // CONTROL DE SESIÓN
+        onAuthStateChanged(auth, async (user) => {
+            const pantallaLogin = document.getElementById("pantalla-login");
+            const pantallaDash = document.getElementById("pantalla-dashboard");
+
+            if (user) {
+                pantallaLogin.classList.add("hidden");
+                pantallaDash.classList.remove("hidden");
+
+                usuarioActualEmail = user.email.toLowerCase();
+                let nombreMostrar = usuarioActualEmail.split("@")[0];
+                let rolMostrar = "Reclutador RH";
+
+                try {
+                    const perfilSnap = await getDoc(doc(db, "perfiles", usuarioActualEmail));
+                    if (perfilSnap.exists()) {
+                        nombreMostrar = perfilSnap.data().nombre || nombreMostrar;
+                        rolMostrar = perfilSnap.data().rol || rolMostrar;
+                    }
+                } catch (e) { console.log("Usando perfil por defecto"); }
+
+                usuarioActualNombre = nombreMostrar;
+                document.getElementById("user-nombre").textContent = nombreMostrar;
+                document.getElementById("user-rol").textContent = rolMostrar;
+                document.getElementById("user-avatar").textContent = nombreMostrar.substring(0, 2).toUpperCase();
+
+                // Llenar datos en modal de configuración
+                document.getElementById("config-nombre").value = nombreMostrar;
+                document.getElementById("config-rol").value = rolMostrar;
+                document.getElementById("config-email").value = user.email;
+
+                iniciarEscuchaCandidatos();
+            } else {
+                pantallaLogin.classList.remove("hidden");
+                pantallaDash.classList.add("hidden");
+                if (unsubscribeCandidatos) unsubscribeCandidatos();
+            }
+        });
+
+        // Formulario de Login
+        document.getElementById("form-login").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const email = document.getElementById("login-email").value;
+            const pass = document.getElementById("login-password").value;
+            const errorBox = document.getElementById("login-error");
+            const btn = document.getElementById("btn-login-submit");
+
+            errorBox.classList.add("hidden");
+            btn.disabled = true;
+            btn.innerHTML = "Verificando...";
+
+            try {
+                await signInWithEmailAndPassword(auth, email, pass);
+            } catch (err) {
+                errorBox.classList.remove("hidden");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span>Iniciar sesión</span><span>&rarr;</span>';
+            }
+        });
+
+        window.cerrarSesion = async () => {
+            await signOut(auth);
+        };
+
+        // Modal de Configuración de Usuario
+        window.abrirModalUsuario = () => {
+            const modal = document.getElementById("modal-usuario");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        };
+
+        window.cerrarModalUsuario = () => {
+            const modal = document.getElementById("modal-usuario");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        };
+
+        document.getElementById("form-usuario").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const nuevoNombre = document.getElementById("config-nombre").value;
+            const nuevoRol = document.getElementById("config-rol").value;
+
+            try {
+                await setDoc(doc(db, "perfiles", usuarioActualEmail), {
+                    nombre: nuevoNombre,
+                    rol: nuevoRol,
+                    email: usuarioActualEmail
+                }, { merge: true });
+
+                usuarioActualNombre = nuevoNombre;
+                document.getElementById("user-nombre").textContent = nuevoNombre;
+                document.getElementById("user-rol").textContent = nuevoRol;
+                document.getElementById("user-avatar").textContent = nuevoNombre.substring(0, 2).toUpperCase();
+
+                alert("Perfil actualizado correctamente");
+                cerrarModalUsuario();
+            } catch (err) {
+                alert("Error al actualizar perfil");
+            }
+        });
+
+        // Escucha en tiempo real de Firestore
+        function iniciarEscuchaCandidatos() {
+            unsubscribeCandidatos = onSnapshot(collection(db, "candidatos"), (snapshot) => {
+                candidatosGlobal = [];
+                snapshot.forEach((docSnap) => {
+                    candidatosGlobal.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                renderizarFiltros();
+                renderizarTablero();
+            });
+        }
 
         const coloresPuesto = [
             "bg-amber-100 text-amber-800",
@@ -340,15 +592,6 @@
             for (let i = 0; i < puesto.length; i++) hash = puesto.charCodeAt(i) + ((hash << 5) - hash);
             return coloresPuesto[Math.abs(hash) % coloresPuesto.length];
         }
-
-        onSnapshot(collection(db, "candidatos"), (snapshot) => {
-            candidatosGlobal = [];
-            snapshot.forEach((docSnap) => {
-                candidatosGlobal.push({ id: docSnap.id, ...docSnap.data() });
-            });
-            renderizarFiltros();
-            renderizarTablero();
-        });
 
         function renderizarFiltros() {
             const contenedor = document.getElementById("filtros-puestos");
@@ -488,7 +731,10 @@
         });
 
         window.cambiarEstatus = async (id, nuevoEstatus) => {
-            await updateDoc(doc(db, "candidatos", id), { estatus: nuevoEstatus });
+            await updateDoc(doc(db, "candidatos", id), {
+                estatus: nuevoEstatus,
+                actualizado_por: usuarioActualNombre
+            });
             if (candidatoSeleccionadoId === id) {
                 document.getElementById("det-select-etapa").value = nuevoEstatus;
             }
@@ -517,13 +763,11 @@
             }
         };
 
-        // Modales y Detalles Estilo RecruitPulse
         window.abrirModalDetalle = (id) => {
             const c = candidatosGlobal.find(item => item.id === id);
             if (!c) return;
             candidatoSeleccionadoId = id;
 
-            // Iniciales para el Avatar
             const partes = (c.nombre || "RH").split(" ");
             const iniciales = partes.length > 1 ? partes[0][0] + partes[1][0] : partes[0].substring(0, 2);
             document.getElementById("det-avatar").textContent = iniciales.toUpperCase();
@@ -550,7 +794,10 @@
 
         window.cambiarEtapaDesdeModal = async (nuevaEtapa) => {
             if (!candidatoSeleccionadoId) return;
-            await updateDoc(doc(db, "candidatos", candidatoSeleccionadoId), { estatus: nuevaEtapa });
+            await updateDoc(doc(db, "candidatos", candidatoSeleccionadoId), {
+                estatus: nuevaEtapa,
+                actualizado_por: usuarioActualNombre
+            });
         };
 
         window.accionBotonModal = async (tipo) => {
@@ -564,14 +811,20 @@
                 else nuevoEstatus = 'aprobado';
             }
 
-            await updateDoc(doc(db, "candidatos", candidatoSeleccionadoId), { estatus: nuevoEstatus });
+            await updateDoc(doc(db, "candidatos", candidatoSeleccionadoId), {
+                estatus: nuevoEstatus,
+                actualizado_por: usuarioActualNombre
+            });
             cerrarModalDetalle();
         };
 
         window.guardarNotas = async () => {
             if (!candidatoSeleccionadoId) return;
             const notas = document.getElementById("det-notas").value;
-            await updateDoc(doc(db, "candidatos", candidatoSeleccionadoId), { notas_rh: notas });
+            await updateDoc(doc(db, "candidatos", candidatoSeleccionadoId), {
+                notas_rh: notas,
+                actualizado_por: usuarioActualNombre
+            });
             alert("Notas guardadas correctamente");
         };
 
@@ -595,7 +848,8 @@
                 puesto: document.getElementById("new-puesto").value,
                 experiencia: document.getElementById("new-experiencia").value,
                 disponibilidad: document.getElementById("new-disponibilidad").value,
-                estatus: "nuevo"
+                estatus: "nuevo",
+                creado_por: usuarioActualNombre
             });
             e.target.reset();
             cerrarModalNuevo();
