@@ -126,7 +126,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- PANTALLA 2: DASHBOARD KANBAN -->
+    <!-- PANTALLA 2: DASHBOARD KANBAN + AJUSTES -->
     <!-- ========================================== -->
     <div id="pantalla-dashboard" class="hidden flex h-screen overflow-hidden w-full">
 
@@ -162,30 +162,46 @@
                         <span id="badge-descartados"
                             class="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full">0</span>
                     </button>
+                    <button onclick="cambiarVista('ajustes')" id="nav-ajustes"
+                        class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                            </path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        Ajustes y Cuenta
+                    </button>
                 </nav>
             </div>
 
-            <!-- PERFIL DE USUARIO INTERACTIVO (CLIC PARA CONFIGURAR) -->
-            <div class="p-4 border-t border-slate-100 space-y-2">
-                <div onclick="abrirModalUsuario()"
-                    class="bg-slate-50 hover:bg-slate-100 p-3 rounded-xl cursor-pointer transition group border border-slate-100">
-                    <div class="flex items-center gap-3">
+            <!-- TARJETA INFERIOR DE PERFIL ESTILO RECRUITPULSE -->
+            <div class="p-4 border-t border-slate-100">
+                <div class="bg-slate-50/90 p-3.5 rounded-2xl border border-slate-200/70 space-y-3">
+                    <div onclick="cambiarVista('ajustes')" class="flex items-center gap-3 cursor-pointer group">
                         <div id="user-avatar"
-                            class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm shrink-0">
-                            RH</div>
+                            class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm shrink-0 overflow-hidden">
+                            RH
+                        </div>
                         <div class="overflow-hidden flex-1">
                             <p id="user-nombre"
-                                class="text-sm font-semibold text-slate-800 truncate group-hover:text-indigo-600 transition">
+                                class="text-sm font-bold text-slate-900 truncate group-hover:text-indigo-600 transition">
                                 Cargando...</p>
-                            <p id="user-rol" class="text-xs text-slate-500 truncate">Reclutador</p>
+                            <p id="user-rol" class="text-xs text-slate-500 truncate">Reclutador Admin</p>
                         </div>
-                        <span class="text-slate-400 text-xs">⚙️</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 pt-1 border-t border-slate-200/60">
+                        <button onclick="cambiarVista('ajustes')" id="btn-sidebar-ajustes"
+                            class="text-xs font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 py-1.5 px-2 rounded-lg transition flex items-center justify-center gap-1.5 bg-white border border-slate-200/80 shadow-2xs">
+                            <span>⚙️</span> Ajustes
+                        </button>
+                        <button onclick="cerrarSesion()"
+                            class="text-xs font-semibold text-rose-600 hover:bg-rose-50 py-1.5 px-2 rounded-lg transition flex items-center justify-center gap-1 bg-white border border-rose-100">
+                            <span>↪</span> Salir
+                        </button>
                     </div>
                 </div>
-                <button onclick="cerrarSesion()"
-                    class="w-full text-xs font-semibold text-rose-600 hover:bg-rose-50 py-1.5 rounded-lg transition flex items-center justify-center gap-1.5 border border-rose-100 bg-white">
-                    <span>Cerrar sesión</span>
-                </button>
             </div>
         </aside>
 
@@ -198,7 +214,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
-                        <input type="text" id="buscador" placeholder="Buscar candidato por nombre, puesto o teléfono..."
+                        <input type="text" id="buscador" placeholder="Buscar candidatos, vacantes o habilidades... ⌘K"
                             class="w-full pl-9 pr-4 py-2 bg-slate-100 border-transparent focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-lg text-sm outline-none transition">
                     </div>
                 </div>
@@ -215,7 +231,9 @@
             </header>
 
             <main class="flex-1 overflow-y-auto p-6">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                <!-- ENCABEZADO DEL KANBAN / DESCARTADOS -->
+                <div id="encabezado-operativo"
+                    class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
                     <div>
                         <div class="flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
@@ -228,6 +246,7 @@
 
                 <div class="flex flex-wrap items-center gap-2 mb-6" id="filtros-puestos"></div>
 
+                <!-- VISTA 1: TABLERO KANBAN -->
                 <div id="vista-kanban" class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                     <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
                         <div class="flex items-center justify-between mb-4 px-1">
@@ -266,20 +285,410 @@
                     </div>
                 </div>
 
+                <!-- VISTA 2: CANDIDATOS DESCARTADOS -->
                 <div id="vista-descartados" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+
+                <!-- ========================================== -->
+                <!-- VISTA 3: AJUSTES Y CUENTA (COMPLETA)       -->
+                <!-- ========================================== -->
+                <div id="vista-ajustes" class="hidden max-w-5xl mx-auto space-y-6 pb-12">
+
+                    <!-- Cabecera de Ajustes -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
+                                <span class="text-indigo-600">CONFIGURACIÓN GENERAL</span>
+                                <span class="text-slate-300">•</span>
+                                <span class="text-slate-600">Equipo RecruitPulse</span>
+                            </div>
+                            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">Ajustes y Cuenta</h1>
+                            <p class="text-sm text-slate-500 mt-0.5">Administra tu perfil, las áreas de clasificación y
+                                las preferencias del flujo de reclutamiento.</p>
+                        </div>
+                        <div
+                            class="inline-flex items-center gap-2 bg-white border border-slate-200/80 px-3.5 py-2 rounded-full shadow-2xs self-start">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            <span class="text-xs font-medium text-slate-600">Workspace Activo: <strong
+                                    class="text-indigo-600">RecruitPulse HQ</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Pestañas de Navegación Interna de Ajustes -->
+                    <div class="flex flex-wrap items-center gap-2 pt-1">
+                        <button type="button" onclick="irASeccionAjustes('sec-perfil', this)"
+                            class="tab-ajuste bg-indigo-600 text-white px-4 py-2.5 rounded-xl text-xs font-semibold shadow-xs flex items-center gap-2 transition">
+                            <span>👤</span> Mi Cuenta
+                        </button>
+                        <button type="button" onclick="irASeccionAjustes('sec-areas', this)"
+                            class="tab-ajuste bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/80 px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition">
+                            <span>🏷️</span> Áreas y Etiquetas
+                            <span id="badge-total-areas"
+                                class="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded text-[10px] font-bold">4</span>
+                        </button>
+                        <button type="button" onclick="irASeccionAjustes('sec-automatizaciones', this)"
+                            class="tab-ajuste bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/80 px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition">
+                            <span>⚡</span> Mensajes Automáticos
+                        </button>
+                        <button type="button" onclick="irASeccionAjustes('sec-auditoria', this)"
+                            class="tab-ajuste bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/80 px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition">
+                            <span>🛡️</span> Notificaciones y Seguridad
+                        </button>
+                    </div>
+
+                    <!-- BLOQUE 1: PERFIL DE USUARIO -->
+                    <div id="sec-perfil" class="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-7 shadow-xs">
+                        <div
+                            class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-5 mb-6">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-indigo-600 text-lg">🪪</span>
+                                    <h2 class="text-base font-bold text-slate-900">Perfil de Usuario</h2>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-0.5">Información personal y credenciales de acceso
+                                    vinculadas a esta consola.</p>
+                            </div>
+                            <span
+                                class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-3 py-1.5 rounded-lg">
+                                <span>🛡️</span> Sesión autenticada vía SAML SSO
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                            <!-- Columna Foto -->
+                            <div class="lg:col-span-3 flex flex-col items-center text-center">
+                                <div class="relative mb-3">
+                                    <div id="ajustes-avatar-preview"
+                                        class="w-28 h-28 rounded-2xl bg-indigo-100 text-indigo-700 font-bold text-3xl flex items-center justify-center shadow-inner border-2 border-white ring-1 ring-slate-200 overflow-hidden">
+                                        SM
+                                    </div>
+                                    <span
+                                        class="w-4 h-4 rounded-full bg-emerald-500 border-2 border-white absolute bottom-1 right-1 shadow-xs"></span>
+                                </div>
+                                <label
+                                    class="cursor-pointer bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/90 text-xs font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5 shadow-2xs">
+                                    <span>📷</span> Cambiar foto
+                                    <input type="file" id="input-foto-perfil" accept="image/png, image/jpeg"
+                                        class="hidden" onchange="previsualizarFotoPerfil(event)">
+                                </label>
+                                <p class="text-[11px] text-slate-400 mt-2">JPG o PNG (máx. 2MB)</p>
+                            </div>
+
+                            <!-- Columna Campos del Perfil -->
+                            <div class="lg:col-span-9 space-y-5">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                    <div>
+                                        <div class="flex justify-between items-center mb-1.5">
+                                            <label class="text-xs font-bold text-slate-700">Nombre completo</label>
+                                            <span class="text-[11px] text-slate-400">Visible para candidatos</span>
+                                        </div>
+                                        <div class="relative">
+                                            <span class="absolute left-3.5 top-3 text-slate-400 text-xs">👤</span>
+                                            <input type="text" id="config-nombre" required
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:bg-white focus:border-indigo-600 outline-none transition">
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="flex justify-between items-center mb-1.5">
+                                            <label class="text-xs font-bold text-slate-700">Correo electrónico
+                                                corporativo</label>
+                                            <span
+                                                class="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">✓
+                                                Verificado</span>
+                                        </div>
+                                        <div class="relative">
+                                            <span class="absolute left-3.5 top-3 text-slate-400 text-xs">✉️</span>
+                                            <input type="email" id="config-email" disabled
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-100/80 border border-slate-200 rounded-xl text-sm text-slate-500 cursor-not-allowed">
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="flex justify-between items-center mb-1.5">
+                                            <label class="text-xs font-bold text-slate-700">Rol en la plataforma</label>
+                                        </div>
+                                        <div class="relative flex items-center">
+                                            <span class="absolute left-3.5 text-indigo-600 text-xs">🛡️</span>
+                                            <input type="text" id="config-rol" required
+                                                class="w-full pl-9 pr-28 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:bg-white focus:border-indigo-600 outline-none transition">
+                                            <span
+                                                class="absolute right-2.5 bg-indigo-50 text-indigo-700 text-[10px] font-bold px-2.5 py-1 rounded-md border border-indigo-100">Admin
+                                                Global</span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div class="flex justify-between items-center mb-1.5">
+                                            <label class="text-xs font-bold text-slate-700">Zona Horaria</label>
+                                        </div>
+                                        <div class="relative">
+                                            <span class="absolute left-3.5 top-3 text-slate-400 text-xs">🕒</span>
+                                            <select id="config-timezone"
+                                                class="w-full pl-9 pr-4 py-2.5 bg-slate-50/70 border border-slate-200 rounded-xl text-sm font-medium text-slate-800 focus:bg-white focus:border-indigo-600 outline-none transition">
+                                                <option value="Monterrey (GMT-6) - Hora Estándar Central">Monterrey
+                                                    (GMT-6) - Hora Estándar Central</option>
+                                                <option value="Ciudad de México (GMT-6) - Hora Central">Ciudad de México
+                                                    (GMT-6) - Hora Central</option>
+                                                <option value="Madrid (GMT+1) - Hora Central Europea">Madrid (GMT+1) -
+                                                    Hora Central Europea</option>
+                                                <option value="Bogotá / Lima (GMT-5)">Bogotá / Lima (GMT-5)</option>
+                                                <option value="Buenos Aires (GMT-3)">Buenos Aires (GMT-3)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Sub-bloque de Seguridad y Contraseña -->
+                                <div
+                                    class="bg-slate-50/90 border border-slate-200/70 rounded-xl p-4 flex flex-wrap items-center justify-between gap-4">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-9 h-9 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm">
+                                            🔄
+                                        </div>
+                                        <div>
+                                            <h4 class="text-xs font-bold text-slate-800">Seguridad y Contraseña</h4>
+                                            <p class="text-[11px] text-slate-500 mt-0.5">Última actualización hace 2
+                                                meses • Autenticación 2FA activada</p>
+                                        </div>
+                                    </div>
+                                    <button type="button" onclick="enviarCambioPassword()"
+                                        class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200/90 text-xs font-semibold px-4 py-2 rounded-xl shadow-2xs transition flex items-center gap-1.5">
+                                        <span>🔑</span> Cambiar contraseña
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BLOQUE 2: ÁREAS DE CLASIFICACIÓN DE CANDIDATOS -->
+                    <div id="sec-areas" class="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-7 shadow-xs">
+                        <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+                            <div>
+                                <div class="flex items-center gap-2.5">
+                                    <h2 class="text-base font-bold text-slate-900">Áreas de Clasificación de Candidatos
+                                    </h2>
+                                    <span id="badge-areas-activas"
+                                        class="bg-indigo-50 text-indigo-700 text-xs font-bold px-2.5 py-0.5 rounded-full border border-indigo-100">4
+                                        Activas</span>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-0.5">Organiza las columnas del tablero Kanban y el
+                                    filtrado automático de perfiles postulantes.</p>
+                            </div>
+                            <button type="button" onclick="agregarNuevaAreaConfig()"
+                                class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs font-bold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 border border-indigo-100">
+                                <span>⊕</span> + Agregar nueva área
+                            </button>
+                        </div>
+
+                        <div id="grid-areas-config" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Se renderiza dinámicamente con contadores en vivo -->
+                        </div>
+                    </div>
+
+                    <!-- BARRA INTERMEDIA DE GUARDADO Y SINCRONIZACIÓN -->
+                    <div
+                        class="bg-white rounded-2xl border border-slate-200/90 px-6 py-4 shadow-md flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center gap-2.5 text-xs text-slate-600">
+                            <span class="text-emerald-600 text-base">☁️</span>
+                            <span>Última sincronización guardada hoy a las <strong id="hora-sincronizacion"
+                                    class="text-slate-900">11:42 AM</strong></span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button type="button" onclick="cambiarVista('kanban')"
+                                class="px-5 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 transition">
+                                Cancelar
+                            </button>
+                            <button type="button" onclick="guardarAjustesCompletos()" id="btn-guardar-ajustes"
+                                class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-sm transition flex items-center gap-2">
+                                <span>✓ Guardar cambios</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- BLOQUE 3: AUTOMATIZACIONES DEL FLUJO DE RECLUTAMIENTO -->
+                    <div id="sec-automatizaciones"
+                        class="bg-white rounded-2xl border border-slate-200/80 p-6 sm:p-7 shadow-xs">
+                        <div class="mb-6">
+                            <div class="flex items-center gap-2">
+                                <span class="text-indigo-600 text-lg">🤖</span>
+                                <h2 class="text-base font-bold text-slate-900">Automatizaciones del Flujo de
+                                    Reclutamiento</h2>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-0.5">Configura las acciones automáticas inmediatas al
+                                tomar decisiones en el tablero o drawer de candidato.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <!-- Sub-tarjeta Izquierda: Al pulsar Continuar proceso -->
+                            <div
+                                class="bg-slate-50/70 rounded-2xl border border-slate-200/80 p-5 flex flex-col justify-between space-y-4">
+                                <div class="space-y-4">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-xl bg-emerald-100/80 text-emerald-700 flex items-center justify-center text-base shrink-0">
+                                                👍
+                                            </div>
+                                            <div>
+                                                <h3 class="text-sm font-bold text-slate-900">Al pulsar "Continuar
+                                                    proceso"</h3>
+                                                <span class="text-[11px] font-semibold text-emerald-600">Acción Positiva
+                                                    de Avance</span>
+                                            </div>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" id="auto-continuar-check" checked
+                                                class="sr-only peer">
+                                            <div
+                                                class="w-11 h-6 bg-slate-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600">
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <p class="text-xs text-slate-600 leading-relaxed">
+                                        Enviar mensaje automático de avance de fase directamente al postulante.
+                                    </p>
+
+                                    <div>
+                                        <span class="block text-[11px] font-bold text-slate-700 mb-2">Canales
+                                            habilitados</span>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span
+                                                class="inline-flex items-center gap-1.5 bg-white border border-emerald-200 text-emerald-700 text-xs font-semibold px-3 py-1.5 rounded-lg shadow-2xs">
+                                                💬 WhatsApp Business
+                                            </span>
+                                            <span
+                                                class="inline-flex items-center gap-1.5 bg-white border border-indigo-200 text-indigo-700 text-xs font-semibold px-3 py-1.5 rounded-lg shadow-2xs">
+                                                ✉️ Correo electrónico
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-white p-3.5 rounded-xl border border-slate-200/80">
+                                        <div class="flex items-center justify-between mb-1.5">
+                                            <span
+                                                class="text-[10px] font-bold uppercase tracking-wider text-slate-400">PLANTILLA
+                                                PREDETERMINADA</span>
+                                            <button type="button" onclick="editarPlantilla('continuar')"
+                                                class="text-[11px] font-bold text-indigo-600 hover:underline">Editar
+                                                plantilla &rarr;</button>
+                                        </div>
+                                        <p id="texto-plantilla-continuar"
+                                            class="text-xs text-slate-700 font-medium truncate">
+                                            "Invitación a entrevista inicial y solicitud de disponibilidad horaria..."
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="pt-2 border-t border-slate-200/60 flex items-center gap-2 text-[11px] text-slate-500">
+                                    <span>⏱️</span> Envío inmediato tras mover ficha a 'Entrevista'
+                                </div>
+                            </div>
+
+                            <!-- Sub-tarjeta Derecha: Al pulsar No seguir / Descartar -->
+                            <div
+                                class="bg-slate-50/70 rounded-2xl border border-slate-200/80 p-5 flex flex-col justify-between space-y-4">
+                                <div class="space-y-4">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 rounded-xl bg-rose-100/80 text-rose-600 flex items-center justify-center text-base shrink-0">
+                                                👎
+                                            </div>
+                                            <div>
+                                                <h3 class="text-sm font-bold text-slate-900">Al pulsar "No seguir /
+                                                    Descartar"</h3>
+                                                <span class="text-[11px] font-semibold text-rose-600">Acción de Descarte
+                                                    Cordial</span>
+                                            </div>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" id="auto-descartar-check" checked
+                                                class="sr-only peer">
+                                            <div
+                                                class="w-11 h-6 bg-slate-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600">
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <p class="text-xs text-slate-600 leading-relaxed">
+                                        Enviar notificación de agradecimiento y retroalimentación empática con cadencia
+                                        diferida.
+                                    </p>
+
+                                    <div>
+                                        <span class="block text-[11px] font-bold text-slate-700 mb-2">Tiempo de espera
+                                            estratégico</span>
+                                        <select id="config-retraso-descarte"
+                                            class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 outline-none focus:border-indigo-500">
+                                            <option value="2h">⏳ Enviar con retraso de 2 horas (recomendado para un
+                                                trato humano)</option>
+                                            <option value="inmediato">⚡ Enviar inmediatamente al confirmar descarte
+                                            </option>
+                                            <option value="24h">📅 Enviar al día siguiente (24 horas)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="bg-white p-3.5 rounded-xl border border-slate-200/80">
+                                        <div class="flex items-center justify-between mb-1.5">
+                                            <span
+                                                class="text-[10px] font-bold uppercase tracking-wider text-slate-400">PLANTILLA
+                                                PREDETERMINADA</span>
+                                            <button type="button" onclick="editarPlantilla('descartar')"
+                                                class="text-[11px] font-bold text-indigo-600 hover:underline">Editar
+                                                plantilla &rarr;</button>
+                                        </div>
+                                        <p id="texto-plantilla-descartar"
+                                            class="text-xs text-slate-700 font-medium truncate">
+                                            "Agradecimiento por postulación y reserva en base de datos de talento..."
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="pt-2 border-t border-slate-200/60 flex items-center gap-2 text-[11px] text-slate-500">
+                                    <span>🤝</span> Preserva la reputación de marca empleadora (Employer Branding)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BLOQUE 4: COPIA DE SEGURIDAD Y REGISTRO DE AUDITORÍA -->
+                    <div id="sec-auditoria"
+                        class="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-xs flex flex-wrap items-center justify-between gap-4">
+                        <div class="flex items-center gap-3.5">
+                            <div
+                                class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg shrink-0">
+                                ☑️
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-bold text-slate-900">Copia de Seguridad y Registro de Auditoría
+                                </h3>
+                                <p class="text-xs text-slate-500 mt-0.5">Tus cambios se reflejan en tiempo real para
+                                    todos los entrevistadores del equipo.</p>
+                            </div>
+                        </div>
+                        <button type="button" onclick="mostrarHistorialCambios()"
+                            class="bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-semibold px-4 py-2.5 rounded-xl transition flex items-center gap-2">
+                            <span>🕒</span> Ver historial de cambios
+                        </button>
+                    </div>
+
+                </div>
             </main>
         </div>
     </div>
 
     <!-- ========================================== -->
-    <!-- MODAL CONFIRMAR DESCARTE DE CANDIDATO (NUEVO) -->
+    <!-- MODAL CONFIRMAR DESCARTE DE CANDIDATO      -->
     <!-- ========================================== -->
     <div id="modal-descarte"
         class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden items-center justify-center p-4 z-[60]">
         <div
             class="bg-white rounded-2xl max-w-xl w-full p-6 sm:p-7 shadow-2xl border border-slate-100 max-h-[92vh] overflow-y-auto">
 
-            <!-- Cabecera del Modal -->
             <div class="flex items-start justify-between gap-4 mb-5">
                 <div class="flex items-start gap-4">
                     <div
@@ -305,7 +714,6 @@
                     class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center font-bold transition shrink-0">&times;</button>
             </div>
 
-            <!-- Tarjeta Resumen del Candidato -->
             <div
                 class="bg-slate-50 border border-slate-200/70 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-3 mb-5">
                 <div class="flex items-center gap-3">
@@ -338,7 +746,6 @@
                 </div>
             </div>
 
-            <!-- Formulario de Motivo de Descarte -->
             <form id="form-descarte" class="space-y-5">
                 <div>
                     <div class="flex justify-between items-center mb-2">
@@ -385,7 +792,6 @@
                     </div>
                 </div>
 
-                <!-- Notas internas y feedback -->
                 <div>
                     <div class="flex justify-between items-center mb-1.5">
                         <label class="text-xs font-bold text-slate-800">Notas internas y feedback</label>
@@ -396,7 +802,6 @@
                         class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-slate-700 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"></textarea>
                 </div>
 
-                <!-- Bloque de Notificación Automatizada -->
                 <div class="bg-slate-50/90 border border-slate-200/80 rounded-2xl p-4 space-y-3">
                     <div class="flex items-start justify-between gap-3">
                         <div class="flex items-start gap-2.5">
@@ -419,7 +824,6 @@
                         </label>
                     </div>
 
-                    <!-- Previsualización del Mensaje Saliente -->
                     <div id="desc-preview-box" class="bg-white border border-slate-200/80 rounded-xl p-3.5">
                         <div
                             class="flex items-center justify-between text-[10px] font-bold text-indigo-600 uppercase tracking-wider mb-2">
@@ -437,7 +841,6 @@
                         </p>
                     </div>
 
-                    <!-- Checkbox Conservar en Talent Pool -->
                     <label class="flex items-center gap-2 pt-1 cursor-pointer">
                         <input type="checkbox" id="desc-talent-pool" checked
                             class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
@@ -446,7 +849,6 @@
                     </label>
                 </div>
 
-                <!-- Botones Inferiores -->
                 <div class="flex items-center justify-between gap-3 pt-2 border-t border-slate-100">
                     <button type="button" onclick="cerrarModalDescarte()"
                         class="px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-100 transition">
@@ -456,42 +858,6 @@
                         class="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-5 py-2.5 rounded-xl text-xs shadow-sm transition flex items-center gap-2">
                         <span>🗑️ Confirmar descarte</span>
                     </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL CONFIGURACIÓN DE USUARIO -->
-    <div id="modal-usuario"
-        class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-slate-900">Configuración de Perfil</h3>
-                <button onclick="cerrarModalUsuario()"
-                    class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
-            </div>
-            <form id="form-usuario" class="space-y-4 text-sm">
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Nombre completo</label>
-                    <input type="text" id="config-nombre" required
-                        class="w-full border border-slate-200 rounded-lg p-2.5 outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Rol / Cargo</label>
-                    <input type="text" id="config-rol" required
-                        class="w-full border border-slate-200 rounded-lg p-2.5 outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Correo electrónico</label>
-                    <input type="email" id="config-email" disabled
-                        class="w-full bg-slate-100 border border-slate-200 rounded-lg p-2.5 text-slate-500 cursor-not-allowed">
-                </div>
-                <div class="pt-2 flex gap-2">
-                    <button type="submit"
-                        class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg transition">Guardar
-                        Cambios</button>
-                    <button type="button" onclick="cerrarModalUsuario()"
-                        class="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-lg transition">Cancelar</button>
                 </div>
             </form>
         </div>
@@ -603,7 +969,7 @@
                 </div>
                 <div>
                     <label class="block font-medium text-slate-700 mb-1">Puesto</label>
-                    <input type="text" id="new-puesto" placeholder="Ej. Cocina, Oficina, Cajero" required
+                    <input type="text" id="new-puesto" placeholder="Ej. Cocina, Oficina, Atención al Cliente" required
                         class="w-full border border-slate-200 rounded-lg p-2.5 outline-none focus:border-indigo-500">
                 </div>
                 <div>
@@ -630,7 +996,7 @@
     <!-- SCRIPTS DE FIREBASE AUTH + FIRESTORE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, onSnapshot, doc, updateDoc, addDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         // CREDENCIALES DE TU PROYECTO FIREBASE
@@ -655,6 +1021,22 @@
         let candidatoDescarteId = null;
         let usuarioActualNombre = "RH";
         let usuarioActualEmail = "";
+        let fotoPerfilBase64 = "";
+
+        // Áreas por defecto para la sección de Ajustes
+        let areasConfig = [
+            { nombre: "Cocina", codigo: "#F97316", icono: "🍴", bgIcono: "bg-orange-100 text-orange-600", badgeBg: "bg-orange-50 text-orange-600", activa: true },
+            { nombre: "Oficina", codigo: "#3B82F6", icono: "💼", bgIcono: "bg-blue-100 text-blue-600", badgeBg: "bg-blue-50 text-blue-600", activa: true },
+            { nombre: "Atención al Cliente", codigo: "#10B981", icono: "🎧", bgIcono: "bg-emerald-100 text-emerald-600", badgeBg: "bg-emerald-50 text-emerald-600", activa: true },
+            { nombre: "Operaciones", codigo: "#8B5CF6", icono: "⚙️", bgIcono: "bg-purple-100 text-purple-600", badgeBg: "bg-purple-50 text-purple-600", activa: true }
+        ];
+
+        function actualizarRelojSincronizacion() {
+            const ahora = new Date();
+            const opciones = { hour: '2-digit', minute: '2-digit' };
+            const elem = document.getElementById("hora-sincronizacion");
+            if (elem) elem.textContent = ahora.toLocaleTimeString('es-MX', opciones);
+        }
 
         // CONTROL DE SESIÓN
         onAuthStateChanged(auth, async (user) => {
@@ -667,26 +1049,39 @@
 
                 usuarioActualEmail = user.email.toLowerCase();
                 let nombreMostrar = usuarioActualEmail.split("@")[0];
-                let rolMostrar = "Reclutador RH";
+                let rolMostrar = "Administrador de Reclutamiento";
+                let timezoneMostrar = "Monterrey (GMT-6) - Hora Estándar Central";
 
                 try {
                     const perfilSnap = await getDoc(doc(db, "perfiles", usuarioActualEmail));
                     if (perfilSnap.exists()) {
-                        nombreMostrar = perfilSnap.data().nombre || nombreMostrar;
-                        rolMostrar = perfilSnap.data().rol || rolMostrar;
+                        const data = perfilSnap.data();
+                        nombreMostrar = data.nombre || nombreMostrar;
+                        rolMostrar = data.rol || rolMostrar;
+                        timezoneMostrar = data.zona_horaria || timezoneMostrar;
+                        if (data.foto_url) fotoPerfilBase64 = data.foto_url;
+                        if (data.areas_config && Array.isArray(data.areas_config)) {
+                            areasConfig = data.areas_config;
+                        }
+                        if (data.plantilla_continuar) {
+                            document.getElementById("texto-plantilla-continuar").textContent = `"${data.plantilla_continuar}"`;
+                        }
+                        if (data.plantilla_descartar) {
+                            document.getElementById("texto-plantilla-descartar").textContent = `"${data.plantilla_descartar}"`;
+                        }
                     }
                 } catch (e) { console.log("Usando perfil por defecto"); }
 
                 usuarioActualNombre = nombreMostrar;
-                document.getElementById("user-nombre").textContent = nombreMostrar;
-                document.getElementById("user-rol").textContent = rolMostrar;
-                document.getElementById("user-avatar").textContent = nombreMostrar.substring(0, 2).toUpperCase();
+                actualizarUIUsuario(nombreMostrar, rolMostrar, fotoPerfilBase64);
 
-                // Llenar datos en modal de configuración
+                // Llenar datos en la vista de Ajustes y Cuenta
                 document.getElementById("config-nombre").value = nombreMostrar;
                 document.getElementById("config-rol").value = rolMostrar;
                 document.getElementById("config-email").value = user.email;
+                document.getElementById("config-timezone").value = timezoneMostrar;
 
+                actualizarRelojSincronizacion();
                 iniciarEscuchaCandidatos();
             } else {
                 pantallaLogin.classList.remove("hidden");
@@ -694,6 +1089,195 @@
                 if (unsubscribeCandidatos) unsubscribeCandidatos();
             }
         });
+
+        function actualizarUIUsuario(nombre, rol, foto) {
+            document.getElementById("user-nombre").textContent = nombre;
+            document.getElementById("user-rol").textContent = rol;
+            const iniciales = nombre.substring(0, 2).toUpperCase();
+
+            const avatarSidebar = document.getElementById("user-avatar");
+            const avatarAjustes = document.getElementById("ajustes-avatar-preview");
+
+            if (foto) {
+                avatarSidebar.innerHTML = `<img src="${foto}" class="w-full h-full object-cover">`;
+                avatarAjustes.innerHTML = `<img src="${foto}" class="w-full h-full object-cover">`;
+            } else {
+                avatarSidebar.textContent = iniciales;
+                avatarAjustes.textContent = iniciales;
+            }
+        }
+
+        // Previsualizar foto de perfil local
+        window.previsualizarFotoPerfil = (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                fotoPerfilBase64 = e.target.result;
+                actualizarUIUsuario(
+                    document.getElementById("config-nombre").value || usuarioActualNombre,
+                    document.getElementById("config-rol").value || "Reclutador Admin",
+                    fotoPerfilBase64
+                );
+            };
+            reader.readAsDataURL(file);
+        };
+
+        // Guardar todos los cambios de la vista Ajustes y Cuenta en Firestore
+        window.guardarAjustesCompletos = async () => {
+            const btn = document.getElementById("btn-guardar-ajustes");
+            const nuevoNombre = document.getElementById("config-nombre").value.trim() || usuarioActualNombre;
+            const nuevoRol = document.getElementById("config-rol").value.trim() || "Administrador de Reclutamiento";
+            const nuevaZona = document.getElementById("config-timezone").value;
+            const autoContinuar = document.getElementById("auto-continuar-check").checked;
+            const autoDescartar = document.getElementById("auto-descartar-check").checked;
+            const retrasoDescarte = document.getElementById("config-retraso-descarte").value;
+
+            btn.disabled = true;
+            btn.innerHTML = "<span>Guardando...</span>";
+
+            try {
+                await setDoc(doc(db, "perfiles", usuarioActualEmail), {
+                    nombre: nuevoNombre,
+                    rol: nuevoRol,
+                    email: usuarioActualEmail,
+                    zona_horaria: nuevaZona,
+                    foto_url: fotoPerfilBase64 || null,
+                    areas_config: areasConfig,
+                    auto_continuar: autoContinuar,
+                    auto_descartar: autoDescartar,
+                    retraso_descarte: retrasoDescarte,
+                    ultima_sincronizacion: new Date().toISOString()
+                }, { merge: true });
+
+                usuarioActualNombre = nuevoNombre;
+                actualizarUIUsuario(nuevoNombre, nuevoRol, fotoPerfilBase64);
+                actualizarRelojSincronizacion();
+                alert("✓ Ajustes y preferencias guardados correctamente en tiempo real.");
+            } catch (err) {
+                alert("Hubo un error al guardar los ajustes.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = "<span>✓ Guardar cambios</span>";
+            }
+        };
+
+        // Enviar correo de restablecimiento de contraseña vía Firebase Auth
+        window.enviarCambioPassword = async () => {
+            if (!usuarioActualEmail) return;
+            try {
+                await sendPasswordResetEmail(auth, usuarioActualEmail);
+                alert(`Se ha enviado un enlace de seguridad para cambiar tu contraseña a: ${usuarioActualEmail}`);
+            } catch (e) {
+                alert("Confirma que el correo esté registrado en Firebase Auth para enviar el enlace.");
+            }
+        };
+
+        // Renderizar tarjetas de Áreas en la vista de Ajustes con conteo real
+        function renderizarAreasAjustes() {
+            const grid = document.getElementById("grid-areas-config");
+            if (!grid) return;
+
+            const activos = candidatosGlobal.filter(c => c.estatus !== 'descartado');
+            let totalActivas = 0;
+            let html = "";
+
+            areasConfig.forEach((area, idx) => {
+                if (area.activa) totalActivas++;
+                const count = activos.filter(c => (c.puesto || "").toLowerCase() === area.nombre.toLowerCase()).length;
+
+                html += `
+                    <div class="p-4 rounded-2xl border border-slate-200/80 bg-slate-50/60 flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3.5">
+                            <div class="w-11 h-11 rounded-xl ${area.bgIcono || 'bg-indigo-100 text-indigo-600'} flex items-center justify-center text-lg shrink-0">
+                                ${area.icono || '🏷️'}
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span class="font-bold text-slate-900 text-sm">${area.nombre}</span>
+                                    <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded ${area.badgeBg || 'bg-indigo-50 text-indigo-600'}">${area.codigo}</span>
+                                </div>
+                                <p class="text-xs text-slate-500 mt-0.5">${count} candidatos activos en pipeline</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2.5">
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" ${area.activa ? 'checked' : ''} onchange="toggleAreaConfig(${idx}, this.checked)" class="sr-only peer">
+                                <div class="w-10 h-5 bg-slate-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+                            </label>
+                            <button type="button" onclick="renombrarAreaConfig(${idx})" class="w-8 h-8 rounded-lg bg-white border border-slate-200/80 hover:bg-slate-100 text-slate-500 flex items-center justify-center text-xs transition" title="Editar nombre del área">
+                                ✏️
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+            document.getElementById("badge-areas-activas").textContent = `${totalActivas} Activas`;
+            document.getElementById("badge-total-areas").textContent = areasConfig.length;
+        }
+
+        window.toggleAreaConfig = (idx, estado) => {
+            if (areasConfig[idx]) {
+                areasConfig[idx].activa = estado;
+                renderizarAreasAjustes();
+            }
+        };
+
+        window.renombrarAreaConfig = (idx) => {
+            const actual = areasConfig[idx];
+            if (!actual) return;
+            const nuevo = prompt("Editar nombre del área de clasificación:", actual.nombre);
+            if (nuevo && nuevo.trim()) {
+                areasConfig[idx].nombre = nuevo.trim();
+                renderizarAreasAjustes();
+            }
+        };
+
+        window.agregarNuevaAreaConfig = () => {
+            const nombre = prompt("Nombre de la nueva área o departamento (ej. Reparto, Barra, Gerencia):");
+            if (!nombre || !nombre.trim()) return;
+            const coloresHex = ["#EC4899", "#14B8A6", "#F59E0B", "#6366F1"];
+            const colorElegido = coloresHex[areasConfig.length % coloresHex.length];
+
+            areasConfig.push({
+                nombre: nombre.trim(),
+                codigo: colorElegido,
+                icono: "🏷️",
+                bgIcono: "bg-indigo-100 text-indigo-600",
+                badgeBg: "bg-indigo-50 text-indigo-600",
+                activa: true
+            });
+            renderizarAreasAjustes();
+        };
+
+        window.editarPlantilla = async (tipo) => {
+            const elemId = tipo === 'continuar' ? 'texto-plantilla-continuar' : 'texto-plantilla-descartar';
+            const actual = document.getElementById(elemId).textContent.replace(/^"|"$/g, '');
+            const nueva = prompt("Edita el mensaje predeterminado de la plantilla:", actual);
+            if (nueva && nueva.trim()) {
+                document.getElementById(elemId).textContent = `"${nueva.trim()}"`;
+                const campoFirestore = tipo === 'continuar' ? { plantilla_continuar: nueva.trim() } : { plantilla_descartar: nueva.trim() };
+                await setDoc(doc(db, "perfiles", usuarioActualEmail), campoFirestore, { merge: true });
+                actualizarRelojSincronizacion();
+            }
+        };
+
+        window.mostrarHistorialCambios = () => {
+            const hora = document.getElementById("hora-sincronizacion").textContent;
+            alert(`Registro de Auditoría RecruitPulse:\n\n• Última sincronización: Hoy a las ${hora}\n• Usuario activo: ${usuarioActualNombre} (${usuarioActualEmail})\n• Candidatos en pipeline sincronizados: ${candidatosGlobal.length}`);
+        };
+
+        window.irASeccionAjustes = (seccionId, btnElem) => {
+            document.querySelectorAll(".tab-ajuste").forEach(b => {
+                b.className = "tab-ajuste bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/80 px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition";
+            });
+            btnElem.className = "tab-ajuste bg-indigo-600 text-white px-4 py-2.5 rounded-xl text-xs font-semibold shadow-xs flex items-center gap-2 transition";
+
+            const sec = document.getElementById(seccionId);
+            if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
 
         // Formulario de Login
         document.getElementById("form-login").addEventListener("submit", async (e) => {
@@ -721,43 +1305,6 @@
             await signOut(auth);
         };
 
-        // Modal de Configuración de Usuario
-        window.abrirModalUsuario = () => {
-            const modal = document.getElementById("modal-usuario");
-            modal.classList.remove("hidden");
-            modal.classList.add("flex");
-        };
-
-        window.cerrarModalUsuario = () => {
-            const modal = document.getElementById("modal-usuario");
-            modal.classList.add("hidden");
-            modal.classList.remove("flex");
-        };
-
-        document.getElementById("form-usuario").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const nuevoNombre = document.getElementById("config-nombre").value;
-            const nuevoRol = document.getElementById("config-rol").value;
-
-            try {
-                await setDoc(doc(db, "perfiles", usuarioActualEmail), {
-                    nombre: nuevoNombre,
-                    rol: nuevoRol,
-                    email: usuarioActualEmail
-                }, { merge: true });
-
-                usuarioActualNombre = nuevoNombre;
-                document.getElementById("user-nombre").textContent = nuevoNombre;
-                document.getElementById("user-rol").textContent = nuevoRol;
-                document.getElementById("user-avatar").textContent = nuevoNombre.substring(0, 2).toUpperCase();
-
-                alert("Perfil actualizado correctamente");
-                cerrarModalUsuario();
-            } catch (err) {
-                alert("Error al actualizar perfil");
-            }
-        });
-
         // Escucha en tiempo real de Firestore
         function iniciarEscuchaCandidatos() {
             unsubscribeCandidatos = onSnapshot(collection(db, "candidatos"), (snapshot) => {
@@ -767,6 +1314,7 @@
                 });
                 renderizarFiltros();
                 renderizarTablero();
+                renderizarAreasAjustes();
             });
         }
 
@@ -939,9 +1487,7 @@
             }
         };
 
-        // ==========================================
         // LÓGICA DEL MODAL DE DESCARTE
-        // ==========================================
         window.abrirModalDescarte = (id) => {
             const c = candidatosGlobal.find(item => item.id === id);
             if (!c) return;
@@ -965,13 +1511,11 @@
             document.getElementById("desc-card-exp").textContent = c.experiencia || "Postulante registrado vía WhatsApp";
             document.getElementById("desc-card-fase").textContent = mapaFases[c.estatus || 'nuevo'] || 'Nuevos Postulantes';
 
-            // Previsualización de notificación
             document.getElementById("desc-preview-contacto").textContent = c.telefono || "contacto@candidato.com";
             document.getElementById("desc-preview-puesto").textContent = puesto;
             document.getElementById("desc-preview-nombre").textContent = partes[0];
             document.getElementById("desc-pool-puesto").textContent = puesto;
 
-            // Resetear campos del formulario de descarte
             document.getElementById("desc-notas").value = "";
             const radios = document.getElementsByName("motivo_descarte");
             if (radios.length > 0) radios[0].checked = true;
@@ -1027,26 +1571,51 @@
             }
         });
 
+        // NAVEGACIÓN ENTRE TABLERO KANBAN, DESCARTADOS Y AJUSTES
         window.cambiarVista = (vista) => {
             const kanban = document.getElementById("vista-kanban");
             const desc = document.getElementById("vista-descartados");
+            const ajustes = document.getElementById("vista-ajustes");
             const filtros = document.getElementById("filtros-puestos");
+            const encabezado = document.getElementById("encabezado-operativo");
             const titulo = document.getElementById("titulo-vista");
+
+            const navKanban = document.getElementById("nav-kanban");
+            const navDesc = document.getElementById("nav-descartados");
+            const navAjustes = document.getElementById("nav-ajustes");
+            const btnSideAjustes = document.getElementById("btn-sidebar-ajustes");
+
+            // Clases base inactivas
+            navKanban.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition";
+            navDesc.className = "w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition";
+            navAjustes.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition";
+            btnSideAjustes.className = "text-xs font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 py-1.5 px-2 rounded-lg transition flex items-center justify-center gap-1.5 bg-white border border-slate-200/80 shadow-2xs";
 
             if (vista === 'kanban') {
                 kanban.classList.remove("hidden");
                 filtros.classList.remove("hidden");
+                encabezado.classList.remove("hidden");
                 desc.classList.add("hidden");
+                ajustes.classList.add("hidden");
                 titulo.textContent = "Flujo de Reclutamiento";
-                document.getElementById("nav-kanban").className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition";
-                document.getElementById("nav-descartados").className = "w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition";
-            } else {
+                navKanban.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition";
+            } else if (vista === 'descartados') {
                 kanban.classList.add("hidden");
                 filtros.classList.add("hidden");
+                ajustes.classList.add("hidden");
+                encabezado.classList.remove("hidden");
                 desc.classList.remove("hidden");
                 titulo.textContent = "Candidatos Descartados";
-                document.getElementById("nav-descartados").className = "w-full flex items-center justify-between px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition";
-                document.getElementById("nav-kanban").className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition";
+                navDesc.className = "w-full flex items-center justify-between px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition";
+            } else if (vista === 'ajustes') {
+                kanban.classList.add("hidden");
+                filtros.classList.add("hidden");
+                desc.classList.add("hidden");
+                encabezado.classList.add("hidden");
+                ajustes.classList.remove("hidden");
+                navAjustes.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition";
+                btnSideAjustes.className = "text-xs font-semibold text-indigo-700 bg-indigo-100/80 py-1.5 px-2 rounded-lg transition flex items-center justify-center gap-1.5 border border-indigo-200";
+                renderizarAreasAjustes();
             }
         };
 
