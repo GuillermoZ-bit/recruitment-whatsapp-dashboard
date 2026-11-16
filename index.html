@@ -34,14 +34,10 @@
     <!-- PANTALLA 1: LOGIN CORPORATIVO (SPLIT-SCREEN) -->
     <!-- ========================================== -->
     <div id="pantalla-login" class="flex h-screen w-full bg-white">
-<<<<<<< HEAD
-        <div class="w-full lg:w-1/2 flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-y-auto">
-=======
 
         <!-- Columna Izquierda: Formulario -->
         <div class="w-full lg:w-1/2 flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-y-auto">
             <!-- Cabecera Logo -->
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <div
@@ -63,10 +59,7 @@
                 </span>
             </div>
 
-<<<<<<< HEAD
-=======
             <!-- Centro: Formulario -->
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
             <div class="max-w-md w-full mx-auto my-8">
                 <h1 class="text-3xl font-bold text-slate-900 tracking-tight mb-2">Bienvenido de nuevo</h1>
                 <p class="text-sm text-slate-500 mb-8">Ingresa tus credenciales profesionales para gestionar candidatos,
@@ -89,13 +82,9 @@
                     </div>
 
                     <div>
-<<<<<<< HEAD
-                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">Contraseña</label>
-=======
                         <div class="flex justify-between items-center mb-1.5">
                             <label class="block text-xs font-semibold text-slate-700">Contraseña</label>
                         </div>
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
                         <div class="relative">
                             <span class="absolute left-3.5 top-3 text-slate-400">🔒</span>
                             <input type="password" id="login-password" required placeholder="••••••••••••"
@@ -113,21 +102,12 @@
                 <div class="mt-6 bg-slate-50 border border-slate-100 rounded-xl p-3.5 flex items-start gap-3">
                     <span class="text-slate-400 mt-0.5">🛡️</span>
                     <p class="text-xs text-slate-500 leading-relaxed">
-<<<<<<< HEAD
-                        Acceso exclusivo para personal autorizado de Talento Humano.
-=======
                         Acceso exclusivo para personal autorizado de Talento Humano. Todas las acciones quedan
                         vinculadas a tu perfil de reclutador.
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
                     </p>
                 </div>
             </div>
 
-<<<<<<< HEAD
-            <div class="text-xs text-slate-400 flex justify-between items-center">
-                <span>&copy; 2026 RecruitPulse</span>
-                <span>Conectado con Firebase Auth</span>
-=======
             <!-- Footer -->
             <div class="text-xs text-slate-400 flex justify-between items-center">
                 <span>&copy; 2026 RecruitPulse</span>
@@ -186,48 +166,22 @@
                             Ver ficha completa</div>
                     </div>
                 </div>
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
             </div>
-        </div>
 
-<<<<<<< HEAD
-        <div
-            class="hidden lg:flex lg:w-1/2 bg-[#0F172A] text-white p-12 flex-col justify-between relative overflow-hidden">
-            <div class="flex justify-between items-center z-10">
-                <span
-                    class="bg-slate-800/80 border border-slate-700 text-xs px-3 py-1.5 rounded-full flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Pipeline en vivo • WhatsApp
-                    Bot
-                </span>
-                <span class="text-xs text-slate-400">⚡ Sincronización en tiempo real</span>
-            </div>
-            <div class="z-10 max-w-md">
-                <h2 class="text-2xl font-bold mb-2">Toma decisiones de talento en tiempo real.</h2>
-                <p class="text-sm text-slate-400 leading-relaxed">Clasifica, evalúa y da seguimiento inmediato a los
-                    candidatos captados automáticamente por WhatsApp.</p>
-=======
             <div class="z-10 max-w-md">
                 <h2 class="text-2xl font-bold mb-2">Toma decisiones de talento en tiempo real.</h2>
                 <p class="text-sm text-slate-400 leading-relaxed">Clasifica, evalúa y da seguimiento inmediato a los
                     candidatos captados automáticamente por WhatsApp en un solo lugar.</p>
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
             </div>
         </div>
     </div>
 
     <!-- ========================================== -->
-<<<<<<< HEAD
-    <!-- PANTALLA 2: DASHBOARD KANBAN -->
-    <!-- ========================================== -->
-    <div id="pantalla-dashboard" class="hidden flex h-screen overflow-hidden w-full">
-
-=======
     <!-- PANTALLA 2: DASHBOARD KANBAN (OCULTO INICIALMENTE) -->
     <!-- ========================================== -->
     <div id="pantalla-dashboard" class="hidden flex h-screen overflow-hidden w-full">
 
         <!-- SIDEBAR IZQUIERDO -->
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
         <aside class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between hidden md:flex shrink-0">
             <div>
                 <div class="h-16 flex items-center px-6 border-b border-slate-100 gap-3">
@@ -263,32 +217,6 @@
                 </nav>
             </div>
 
-<<<<<<< HEAD
-            <!-- PERFIL DE USUARIO INTERACTIVO (CLIC PARA CONFIGURAR) -->
-            <div class="p-4 border-t border-slate-100 space-y-2">
-                <div onclick="abrirModalUsuario()"
-                    class="bg-slate-50 hover:bg-slate-100 p-3 rounded-xl cursor-pointer transition group border border-slate-100">
-                    <div class="flex items-center gap-3">
-                        <div id="user-avatar"
-                            class="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm shrink-0">
-                            RH</div>
-                        <div class="overflow-hidden flex-1">
-                            <p id="user-nombre"
-                                class="text-sm font-semibold text-slate-800 truncate group-hover:text-indigo-600 transition">
-                                Cargando...</p>
-                            <p id="user-rol" class="text-xs text-slate-500 truncate">Reclutador</p>
-                        </div>
-                        <span class="text-slate-400 text-xs">⚙️</span>
-                    </div>
-                </div>
-                <button onclick="cerrarSesion()"
-                    class="w-full text-xs font-semibold text-rose-600 hover:bg-rose-50 py-1.5 rounded-lg transition flex items-center justify-center gap-1.5 border border-rose-100 bg-white">
-                    <span>Cerrar sesión</span>
-                </button>
-            </div>
-        </aside>
-
-=======
             <!-- Perfil del Usuario Logueado + Cerrar Sesión -->
             <div class="p-4 border-t border-slate-100">
                 <div class="bg-slate-50 p-3 rounded-xl">
@@ -310,7 +238,6 @@
         </aside>
 
         <!-- CONTENIDO PRINCIPAL -->
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
         <div class="flex-1 flex flex-col overflow-hidden">
             <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
                 <div class="flex items-center gap-4 flex-1 max-w-md">
@@ -350,10 +277,7 @@
 
                 <div class="flex flex-wrap items-center gap-2 mb-6" id="filtros-puestos"></div>
 
-<<<<<<< HEAD
-=======
                 <!-- TABLERO KANBAN -->
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
                 <div id="vista-kanban" class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                     <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
                         <div class="flex items-center justify-between mb-4 px-1">
@@ -397,45 +321,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
-    <!-- MODAL CONFIGURACIÓN DE USUARIO -->
-    <div id="modal-usuario"
-        class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden items-center justify-center p-4 z-50">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-slate-900">Configuración de Perfil</h3>
-                <button onclick="cerrarModalUsuario()"
-                    class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
-            </div>
-            <form id="form-usuario" class="space-y-4 text-sm">
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Nombre completo</label>
-                    <input type="text" id="config-nombre" required
-                        class="w-full border border-slate-200 rounded-lg p-2.5 outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Rol / Cargo</label>
-                    <input type="text" id="config-rol" required
-                        class="w-full border border-slate-200 rounded-lg p-2.5 outline-none focus:border-indigo-500">
-                </div>
-                <div>
-                    <label class="block font-medium text-slate-700 mb-1">Correo electrónico</label>
-                    <input type="email" id="config-email" disabled
-                        class="w-full bg-slate-100 border border-slate-200 rounded-lg p-2.5 text-slate-500 cursor-not-allowed">
-                </div>
-                <div class="pt-2 flex gap-2">
-                    <button type="submit"
-                        class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg transition">Guardar
-                        Cambios</button>
-                    <button type="button" onclick="cerrarModalUsuario()"
-                        class="px-4 py-2.5 bg-slate-100 text-slate-700 rounded-lg transition">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-=======
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
     <!-- MODAL DETALLE AVANZADO -->
     <div id="modal-detalle" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs hidden items-center justify-end z-50">
         <div class="bg-white h-full max-w-xl w-full p-6 shadow-2xl flex flex-col justify-between overflow-y-auto">
@@ -570,11 +455,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-<<<<<<< HEAD
-        import { getFirestore, collection, onSnapshot, doc, updateDoc, addDoc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-=======
         import { getFirestore, collection, onSnapshot, doc, updateDoc, addDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
 
         // PEGA AQUÍ TUS CREDENCIALES DE FIREBASE
         const firebaseConfig = {
@@ -586,7 +467,6 @@
             appId: "1:592998142314:web:28d01f990fcea60291d513"
         };
 
-
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
@@ -597,30 +477,13 @@
         let textoBusqueda = "";
         let candidatoSeleccionadoId = null;
         let usuarioActualNombre = "RH";
-<<<<<<< HEAD
-        let usuarioActualEmail = "";
-
-        // CONTROL DE SESIÓN
-=======
 
         // CONTROL DE SESIÓN (AUTH STATE)
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
         onAuthStateChanged(auth, async (user) => {
             const pantallaLogin = document.getElementById("pantalla-login");
             const pantallaDash = document.getElementById("pantalla-dashboard");
 
             if (user) {
-<<<<<<< HEAD
-                pantallaLogin.classList.add("hidden");
-                pantallaDash.classList.remove("hidden");
-
-                usuarioActualEmail = user.email.toLowerCase();
-                let nombreMostrar = usuarioActualEmail.split("@")[0];
-                let rolMostrar = "Reclutador RH";
-
-                try {
-                    const perfilSnap = await getDoc(doc(db, "perfiles", usuarioActualEmail));
-=======
                 // Usuario autenticado: ocultar login y mostrar dashboard
                 pantallaLogin.classList.add("hidden");
                 pantallaDash.classList.remove("hidden");
@@ -632,7 +495,6 @@
 
                 try {
                     const perfilSnap = await getDoc(doc(db, "perfiles", emailLimpio));
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
                     if (perfilSnap.exists()) {
                         nombreMostrar = perfilSnap.data().nombre || nombreMostrar;
                         rolMostrar = perfilSnap.data().rol || rolMostrar;
@@ -644,19 +506,9 @@
                 document.getElementById("user-rol").textContent = rolMostrar;
                 document.getElementById("user-avatar").textContent = nombreMostrar.substring(0, 2).toUpperCase();
 
-<<<<<<< HEAD
-                // Llenar datos en modal de configuración
-                document.getElementById("config-nombre").value = nombreMostrar;
-                document.getElementById("config-rol").value = rolMostrar;
-                document.getElementById("config-email").value = user.email;
-
-                iniciarEscuchaCandidatos();
-            } else {
-=======
                 iniciarEscuchaCandidatos();
             } else {
                 // No hay sesión: mostrar login y detener escucha
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
                 pantallaLogin.classList.remove("hidden");
                 pantallaDash.classList.add("hidden");
                 if (unsubscribeCandidatos) unsubscribeCandidatos();
@@ -689,48 +541,7 @@
             await signOut(auth);
         };
 
-<<<<<<< HEAD
-        // Modal de Configuración de Usuario
-        window.abrirModalUsuario = () => {
-            const modal = document.getElementById("modal-usuario");
-            modal.classList.remove("hidden");
-            modal.classList.add("flex");
-        };
-
-        window.cerrarModalUsuario = () => {
-            const modal = document.getElementById("modal-usuario");
-            modal.classList.add("hidden");
-            modal.classList.remove("flex");
-        };
-
-        document.getElementById("form-usuario").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const nuevoNombre = document.getElementById("config-nombre").value;
-            const nuevoRol = document.getElementById("config-rol").value;
-
-            try {
-                await setDoc(doc(db, "perfiles", usuarioActualEmail), {
-                    nombre: nuevoNombre,
-                    rol: nuevoRol,
-                    email: usuarioActualEmail
-                }, { merge: true });
-
-                usuarioActualNombre = nuevoNombre;
-                document.getElementById("user-nombre").textContent = nuevoNombre;
-                document.getElementById("user-rol").textContent = nuevoRol;
-                document.getElementById("user-avatar").textContent = nuevoNombre.substring(0, 2).toUpperCase();
-
-                alert("Perfil actualizado correctamente");
-                cerrarModalUsuario();
-            } catch (err) {
-                alert("Error al actualizar perfil");
-            }
-        });
-
-        // Escucha en tiempo real de Firestore
-=======
         // Escucha en tiempo real de Firestore (solo activa cuando hay sesión)
->>>>>>> c7afc54cd402ff85655f938b1eefb7c7c28c7484
         function iniciarEscuchaCandidatos() {
             unsubscribeCandidatos = onSnapshot(collection(db, "candidatos"), (snapshot) => {
                 candidatosGlobal = [];
