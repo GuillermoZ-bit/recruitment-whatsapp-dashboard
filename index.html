@@ -4,18 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RecruitPulse Enterprise - Portal de Reclutamiento</title>
+    <title>Apli Reclutamiento - Portal de Talento</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class'
         };
-        // Aplicar tema guardado inmediatamente antes de renderizar para evitar destellos blancos
+        // Aplicar tema guardado inmediatamente antes de renderizar
         if (localStorage.getItem('rp_theme') === 'dark') {
             document.documentElement.classList.add('dark');
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -77,7 +77,8 @@
         }
 
         html.dark .text-slate-900,
-        html.dark .text-slate-800 {
+        html.dark .text-slate-800,
+        html.dark .apli-brand-text {
             color: #F8FAFC !important;
         }
 
@@ -144,20 +145,60 @@
     <div id="pantalla-login" class="flex h-screen w-full bg-white">
         <div class="w-full lg:w-1/2 flex flex-col justify-between p-8 sm:p-12 lg:p-16 overflow-y-auto">
             <div class="flex items-center justify-between">
+                <!-- LOGO APLI RECLUTAMIENTO -->
                 <div class="flex items-center gap-3">
-                    <div
-                        class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white font-bold shadow-sm">
-                        RP
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2">
-                            <span class="font-bold text-lg tracking-tight text-slate-900">RecruitPulse</span>
-                            <span
-                                class="text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600 px-2 py-0.5 rounded">Enterprise</span>
+                    <img src="logo-apli.jpg" alt="Apli Reclutamiento" class="h-12 w-auto object-contain rounded-lg"
+                        onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
+                    <div class="flex items-center gap-2.5">
+                        <!-- Icono Vectorial Apli -->
+                        <svg class="w-11 h-11 shrink-0" viewBox="0 0 64 64" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="apliGradLogin" x1="0" y1="64" x2="64" y2="0"
+                                    gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#0284C7" />
+                                    <stop offset="100%" stop-color="#14B8A6" />
+                                </linearGradient>
+                            </defs>
+                            <!-- Burbuja principal -->
+                            <path
+                                d="M30 8C16.745 8 6 18.297 6 31C6 36.32 8.01 41.216 11.39 45.08L8 55L18.42 50.83C21.93 52.23 25.85 53 30 53C43.255 53 54 42.703 54 30C54 17.297 43.255 8 30 8Z"
+                                fill="url(#apliGradLogin)" />
+                            <!-- Rostro con headset -->
+                            <path
+                                d="M18 30C18 23.925 22.925 19 29 19C35.075 19 40 23.925 40 30V33H37V30C37 25.582 33.418 22 29 22C24.582 22 21 25.582 21 30V33H18V30Z"
+                                fill="white" />
+                            <circle cx="29" cy="31" r="7.5" fill="white" />
+                            <circle cx="26.5" cy="30" r="1.2" fill="#0369A1" />
+                            <circle cx="31.5" cy="30" r="1.2" fill="#0369A1" />
+                            <path d="M26.5 33.5C27.2 34.5 30.8 34.5 31.5 33.5" stroke="#0369A1" stroke-width="1.5"
+                                stroke-linecap="round" />
+                            <!-- Lupa inferior derecha -->
+                            <circle cx="41" cy="43" r="6" fill="white" stroke="#0284C7" stroke-width="2.5" />
+                            <path d="M45.5 47.5L51 53" stroke="#0284C7" stroke-width="3.5" stroke-linecap="round" />
+                            <!-- Insignia Check superior derecha -->
+                            <circle cx="50" cy="14" r="8" fill="#14B8A6" stroke="white" stroke-width="2" />
+                            <path d="M46.5 14L49 16.5L53.5 11.5" stroke="white" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <div class="leading-none">
+                            <div class="flex items-baseline gap-1">
+                                <span
+                                    class="apli-brand-text font-extrabold text-2xl tracking-tight text-[#082F49]">Apl</span>
+                                <span
+                                    class="relative inline-block apli-brand-text font-extrabold text-2xl tracking-tight text-[#082F49]">
+                                    ı
+                                    <span
+                                        class="absolute -top-1.5 -left-0.5 w-3.5 h-3 rounded-full bg-gradient-to-r from-sky-500 to-teal-400 flex items-center justify-center text-[6px] text-white font-bold shadow-2xs">•••</span>
+                                </span>
+                                <span
+                                    class="ml-1.5 text-[10px] font-bold uppercase tracking-wider bg-teal-50 text-teal-700 border border-teal-200/60 px-2 py-0.5 rounded">Enterprise</span>
+                            </div>
+                            <p class="text-[11px] font-medium tracking-wide text-slate-500">reclutamiento</p>
                         </div>
-                        <p class="text-xs text-slate-500">Portal de Reclutamiento</p>
                     </div>
                 </div>
+
                 <div class="flex items-center gap-2">
                     <button type="button" onclick="toggleDarkMode()"
                         class="btn-theme-toggle px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 transition flex items-center gap-1.5">
@@ -173,8 +214,8 @@
 
             <div class="max-w-md w-full mx-auto my-8">
                 <h1 class="text-3xl font-bold text-slate-900 tracking-tight mb-2">Bienvenido de nuevo</h1>
-                <p class="text-sm text-slate-500 mb-8">Ingresa tus credenciales profesionales para gestionar candidatos,
-                    pipelines y decisiones tácticas.</p>
+                <p class="text-sm text-slate-500 mb-8">Ingresa tus credenciales profesionales en Apli para gestionar
+                    candidatos, pipelines y decisiones tácticas.</p>
 
                 <div id="login-error"
                     class="hidden mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-medium">
@@ -187,7 +228,7 @@
                             profesional</label>
                         <div class="relative">
                             <span class="absolute left-3.5 top-3 text-slate-400">✉️</span>
-                            <input type="email" id="login-email" required placeholder="rh@empresa.com"
+                            <input type="email" id="login-email" required placeholder="rh@apli.io"
                                 class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:bg-white focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 outline-none transition">
                         </div>
                     </div>
@@ -211,13 +252,13 @@
                 <div class="mt-6 bg-slate-50 border border-slate-100 rounded-xl p-3.5 flex items-start gap-3">
                     <span class="text-slate-400 mt-0.5">🛡️</span>
                     <p class="text-xs text-slate-500 leading-relaxed">
-                        Acceso exclusivo para personal autorizado de Talento Humano.
+                        Acceso exclusivo para personal autorizado de Talento Humano en Apli Reclutamiento.
                     </p>
                 </div>
             </div>
 
             <div class="text-xs text-slate-400 flex justify-between items-center">
-                <span>&copy; 2026 RecruitPulse</span>
+                <span>&copy; 2026 Apli Reclutamiento</span>
                 <span>Conectado con Firebase Auth</span>
             </div>
         </div>
@@ -233,7 +274,7 @@
                 <span class="text-xs text-slate-400">⚡ Sincronización en tiempo real</span>
             </div>
             <div class="z-10 max-w-md">
-                <h2 class="text-2xl font-bold mb-2 text-white">Toma decisiones de talento en tiempo real.</h2>
+                <h2 class="text-2xl font-bold mb-2 text-white">Toma decisiones de talento en tiempo real con Apli.</h2>
                 <p class="text-sm text-slate-400 leading-relaxed">Clasifica, evalúa y da seguimiento inmediato a los
                     candidatos captados automáticamente por WhatsApp.</p>
             </div>
@@ -247,13 +288,53 @@
 
         <aside class="w-64 bg-white border-r border-slate-200 flex flex-col justify-between hidden md:flex shrink-0">
             <div>
-                <div class="h-16 flex items-center px-6 border-b border-slate-100 gap-3">
-                    <div
-                        class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold shadow-sm">
-                        RP
+                <!-- CABECERA DEL SIDEBAR CON EL LOGO APLI -->
+                <div class="h-16 flex items-center px-5 border-b border-slate-100 gap-2.5">
+                    <img src="logo-apli.jpg" alt="Apli Reclutamiento" class="h-10 w-auto object-contain rounded"
+                        onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
+                    <div class="flex items-center gap-2.5">
+                        <svg class="w-9 h-9 shrink-0" viewBox="0 0 64 64" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="apliGradSide" x1="0" y1="64" x2="64" y2="0"
+                                    gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#0284C7" />
+                                    <stop offset="100%" stop-color="#14B8A6" />
+                                </linearGradient>
+                            </defs>
+                            <path
+                                d="M30 8C16.745 8 6 18.297 6 31C6 36.32 8.01 41.216 11.39 45.08L8 55L18.42 50.83C21.93 52.23 25.85 53 30 53C43.255 53 54 42.703 54 30C54 17.297 43.255 8 30 8Z"
+                                fill="url(#apliGradSide)" />
+                            <path
+                                d="M18 30C18 23.925 22.925 19 29 19C35.075 19 40 23.925 40 30V33H37V30C37 25.582 33.418 22 29 22C24.582 22 21 25.582 21 30V33H18V30Z"
+                                fill="white" />
+                            <circle cx="29" cy="31" r="7.5" fill="white" />
+                            <circle cx="26.5" cy="30" r="1.2" fill="#0369A1" />
+                            <circle cx="31.5" cy="30" r="1.2" fill="#0369A1" />
+                            <path d="M26.5 33.5C27.2 34.5 30.8 34.5 31.5 33.5" stroke="#0369A1" stroke-width="1.5"
+                                stroke-linecap="round" />
+                            <circle cx="41" cy="43" r="6" fill="white" stroke="#0284C7" stroke-width="2.5" />
+                            <path d="M45.5 47.5L51 53" stroke="#0284C7" stroke-width="3.5" stroke-linecap="round" />
+                            <circle cx="50" cy="14" r="8" fill="#14B8A6" stroke="white" stroke-width="2" />
+                            <path d="M46.5 14L49 16.5L53.5 11.5" stroke="white" stroke-width="2.2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        <div class="leading-none">
+                            <div class="flex items-baseline">
+                                <span
+                                    class="apli-brand-text font-extrabold text-xl tracking-tight text-[#082F49]">Apl</span>
+                                <span
+                                    class="relative inline-block apli-brand-text font-extrabold text-xl tracking-tight text-[#082F49]">
+                                    ı
+                                    <span
+                                        class="absolute -top-1 -left-0.5 w-3 h-2.5 rounded-full bg-gradient-to-r from-sky-500 to-teal-400 flex items-center justify-center text-[5px] text-white font-bold">•••</span>
+                                </span>
+                            </div>
+                            <p class="text-[10px] font-medium tracking-wide text-slate-500">reclutamiento</p>
+                        </div>
                     </div>
-                    <span class="font-bold text-lg tracking-tight text-slate-900">RecruitPulse</span>
                 </div>
+
                 <nav class="p-4 space-y-1">
                     <button onclick="cambiarVista('kanban')" id="nav-kanban"
                         class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition">
@@ -330,7 +411,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
-                        <input type="text" id="buscador" placeholder="Buscar candidatos, vacantes o habilidades... ⌘K"
+                        <input type="text" id="buscador"
+                            placeholder="Buscar candidatos, vacantes o habilidades en Apli... ⌘K"
                             class="w-full pl-9 pr-4 py-2 bg-slate-100 border-transparent focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-lg text-sm outline-none transition">
                     </div>
                 </div>
@@ -426,7 +508,7 @@
                             <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider">
                                 <span class="text-indigo-600">CONFIGURACIÓN GENERAL</span>
                                 <span class="text-slate-300">•</span>
-                                <span class="text-slate-600">Equipo RecruitPulse</span>
+                                <span class="text-slate-600">Equipo Apli</span>
                             </div>
                             <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">Ajustes y Cuenta</h1>
                             <p class="text-sm text-slate-500 mt-0.5">Administra tu perfil, las áreas de clasificación y
@@ -436,7 +518,7 @@
                             class="inline-flex items-center gap-2 bg-white border border-slate-200/80 px-3.5 py-2 rounded-full shadow-2xs self-start">
                             <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                             <span class="text-xs font-medium text-slate-600">Workspace Activo: <strong
-                                    class="text-indigo-600">RecruitPulse HQ</strong></span>
+                                    class="text-indigo-600">Apli HQ</strong></span>
                         </div>
                     </div>
 
@@ -471,7 +553,7 @@
                                     <h2 class="text-base font-bold text-slate-900">Perfil de Usuario</h2>
                                 </div>
                                 <p class="text-xs text-slate-500 mt-0.5">Información personal y credenciales de acceso
-                                    vinculadas a esta consola.</p>
+                                    vinculadas a esta consola de Apli.</p>
                             </div>
                             <span
                                 class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200/60 px-3 py-1.5 rounded-lg">
@@ -822,7 +904,7 @@
                         <p class="text-xs sm:text-sm text-slate-400 mt-1 leading-relaxed">
                             Esta acción moverá a <strong id="avz-texto-nombre"
                                 class="text-slate-200 font-semibold">Mateo Velásquez</strong> a la siguiente fase del
-                            proceso de selección y notificará al equipo evaluador.
+                            proceso de selección en Apli y notificará al equipo evaluador.
                         </p>
                     </div>
                 </div>
@@ -981,7 +1063,7 @@
                     <div id="avz-preview-box"
                         class="hidden bg-[#171E31] border border-slate-800 rounded-xl p-3 text-[11px] text-slate-300 italic">
                         «¡Hola <span id="avz-prev-nombre">Candidato</span>! Nos complace informarte que has avanzado a
-                        la siguiente fase de nuestro proceso de selección. Te esperamos en <span
+                        la siguiente fase de nuestro proceso de selección en Apli. Te esperamos en <span
                             id="avz-prev-lugar">Sede Central</span> (<span id="avz-prev-fecha">Mañana, 11:00</span>).»
                     </div>
                 </div>
@@ -1018,9 +1100,8 @@
                         </svg>
                     </div>
                     <div>
-                        <span
-                            class="text-[11px] font-bold uppercase tracking-wider text-rose-600 block mb-0.5">RECRUITPULSE
-                            · GESTIÓN DE PIPELINE</span>
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-rose-600 block mb-0.5">APLI
+                            RECLUTAMIENTO · GESTIÓN DE PIPELINE</span>
                         <h3 class="text-xl font-bold text-slate-900">¿Confirmar descarte de candidato?</h3>
                         <p class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                             Esta acción moverá a <strong id="desc-texto-nombre" class="text-slate-800">Mateo
@@ -1150,12 +1231,12 @@
                         </div>
                         <p class="text-[11px] font-semibold text-slate-800 mb-1.5">
                             Para: <span id="desc-preview-contacto">candidato</span> · Asunto: Tu postulación para <span
-                                id="desc-preview-puesto">Vacante</span> en RecruitPulse
+                                id="desc-preview-puesto">Vacante</span> en Apli
                         </p>
                         <p class="text-[11px] text-slate-500 italic leading-relaxed">
                             «Estimado/a <span id="desc-preview-nombre">Candidato</span>, agradecemos enormemente el
-                            tiempo e interés dedicados a nuestra convocatoria. Tras una cuidadosa revisión de las
-                            postulaciones, hemos decidido priorizar perfiles que se ajusten a los requerimientos
+                            tiempo e interés dedicados a nuestra convocatoria en Apli. Tras una cuidadosa revisión de
+                            las postulaciones, hemos decidido priorizar perfiles que se ajusten a los requerimientos
                             actuales del turno. Tus credenciales han sido sumadas a nuestra base de talento preferente.»
                         </p>
                     </div>
@@ -1163,8 +1244,8 @@
                     <label class="flex items-center gap-2 pt-1 cursor-pointer">
                         <input type="checkbox" id="desc-talent-pool" checked
                             class="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500">
-                        <span class="text-xs font-medium text-slate-700">Conservar en Talent Pool para futuras aperturas
-                            de <span id="desc-pool-puesto" class="font-semibold">esta área</span></span>
+                        <span class="text-xs font-medium text-slate-700">Conservar en Talent Pool de Apli para futuras
+                            aperturas de <span id="desc-pool-puesto" class="font-semibold">esta área</span></span>
                     </label>
                 </div>
 
@@ -1197,7 +1278,7 @@
                                 <span id="det-puesto-badge"
                                     class="text-xs font-semibold px-2 py-0.5 rounded-md bg-amber-100 text-amber-800">Puesto</span>
                             </div>
-                            <p class="text-xs text-slate-500 mt-0.5">Postulado vía WhatsApp Bot</p>
+                            <p class="text-xs text-slate-500 mt-0.5">Postulado vía Apli WhatsApp Bot</p>
                         </div>
                     </div>
                     <button onclick="cerrarModalDetalle()"
@@ -1502,7 +1583,7 @@
                 usuarioActualNombre = nuevoNombre;
                 actualizarUIUsuario(nuevoNombre, nuevoRol, fotoPerfilBase64);
                 actualizarRelojSincronizacion();
-                alert("✓ Ajustes y preferencias guardados correctamente en tiempo real.");
+                alert("✓ Ajustes y preferencias de Apli guardados correctamente en tiempo real.");
             } catch (err) {
                 alert("Hubo un error al guardar los ajustes.");
             } finally {
@@ -1613,7 +1694,7 @@
 
         window.mostrarHistorialCambios = () => {
             const hora = document.getElementById("hora-sincronizacion").textContent;
-            alert(`Registro de Auditoría RecruitPulse:\n\n• Última sincronización: Hoy a las ${hora}\n• Usuario activo: ${usuarioActualNombre} (${usuarioActualEmail})\n• Candidatos en pipeline sincronizados: ${candidatosGlobal.length}`);
+            alert(`Registro de Auditoría Apli Reclutamiento:\n\n• Última sincronización: Hoy a las ${hora}\n• Usuario activo: ${usuarioActualNombre} (${usuarioActualEmail})\n• Candidatos en pipeline sincronizados: ${candidatosGlobal.length}`);
         };
 
         window.irASeccionAjustes = (seccionId, btnElem) => {
@@ -1836,7 +1917,7 @@
 
         // ELIMINACIÓN DEFINITIVA DE CANDIDATOS
         window.eliminarCandidatoDefinitivo = async (id, nombre) => {
-            const confirmar = confirm(`¿Estás seguro de que deseas eliminar permanentemente a "${nombre}" de la base de datos?\n\nEsta acción no se puede deshacer.`);
+            const confirmar = confirm(`¿Estás seguro de que deseas eliminar permanentemente a "${nombre}" de la base de datos de Apli?\n\nEsta acción no se puede deshacer.`);
             if (!confirmar) return;
 
             try {
