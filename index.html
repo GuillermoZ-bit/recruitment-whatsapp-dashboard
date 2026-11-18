@@ -10,7 +10,6 @@
         tailwind.config = {
             darkMode: 'class'
         };
-        // Aplicar tema guardado inmediatamente antes de renderizar
         if (localStorage.getItem('rp_theme') === 'dark') {
             document.documentElement.classList.add('dark');
         }
@@ -42,7 +41,6 @@
 
         /* ==========================================
            REGLAS GLOBALES DE MODO OSCURO
-           Transforma todas las vistas, tarjetas y modales activos
            ========================================== */
         html.dark body,
         html.dark .bg-\[\#F8FAFC\] {
@@ -150,7 +148,6 @@
                     <img src="logo-apli.jpg" alt="Apli Reclutamiento" class="h-12 w-auto object-contain rounded-lg"
                         onerror="this.classList.add('hidden'); this.nextElementSibling.classList.remove('hidden');">
                     <div class="flex items-center gap-2.5">
-                        <!-- Icono Vectorial Apli -->
                         <svg class="w-11 h-11 shrink-0" viewBox="0 0 64 64" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <defs>
@@ -160,11 +157,9 @@
                                     <stop offset="100%" stop-color="#14B8A6" />
                                 </linearGradient>
                             </defs>
-                            <!-- Burbuja principal -->
                             <path
                                 d="M30 8C16.745 8 6 18.297 6 31C6 36.32 8.01 41.216 11.39 45.08L8 55L18.42 50.83C21.93 52.23 25.85 53 30 53C43.255 53 54 42.703 54 30C54 17.297 43.255 8 30 8Z"
                                 fill="url(#apliGradLogin)" />
-                            <!-- Rostro con headset -->
                             <path
                                 d="M18 30C18 23.925 22.925 19 29 19C35.075 19 40 23.925 40 30V33H37V30C37 25.582 33.418 22 29 22C24.582 22 21 25.582 21 30V33H18V30Z"
                                 fill="white" />
@@ -173,10 +168,8 @@
                             <circle cx="31.5" cy="30" r="1.2" fill="#0369A1" />
                             <path d="M26.5 33.5C27.2 34.5 30.8 34.5 31.5 33.5" stroke="#0369A1" stroke-width="1.5"
                                 stroke-linecap="round" />
-                            <!-- Lupa inferior derecha -->
                             <circle cx="41" cy="43" r="6" fill="white" stroke="#0284C7" stroke-width="2.5" />
                             <path d="M45.5 47.5L51 53" stroke="#0284C7" stroke-width="3.5" stroke-linecap="round" />
-                            <!-- Insignia Check superior derecha -->
                             <circle cx="50" cy="14" r="8" fill="#14B8A6" stroke="white" stroke-width="2" />
                             <path d="M46.5 14L49 16.5L53.5 11.5" stroke="white" stroke-width="2.2"
                                 stroke-linecap="round" stroke-linejoin="round" />
@@ -402,8 +395,9 @@
         </aside>
 
         <div class="flex-1 flex flex-col overflow-hidden">
-            <!-- TOPBAR CON BOTÓN DE MODO OSCURO -->
-            <header class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
+            <!-- TOPBAR CON BOTÓN DE EXPORTAR EXCEL / CSV Y MODO OSCURO -->
+            <header
+                class="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between gap-3 shrink-0">
                 <div class="flex items-center gap-4 flex-1 max-w-md">
                     <div class="relative w-full">
                         <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3" fill="none" stroke="currentColor"
@@ -416,20 +410,74 @@
                             class="w-full pl-9 pr-4 py-2 bg-slate-100 border-transparent focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 rounded-lg text-sm outline-none transition">
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2.5">
                     <!-- Interruptor de Modo Oscuro / Claro -->
                     <button type="button" onclick="toggleDarkMode()" title="Cambiar entre Modo Oscuro y Modo Claro"
                         class="btn-theme-toggle px-3 py-2 rounded-lg border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 transition flex items-center gap-1.5 shadow-2xs">
                         <span class="theme-icon text-sm">🌙</span>
-                        <span class="theme-text hidden sm:inline">Modo Oscuro</span>
+                        <span class="theme-text hidden xl:inline">Modo Oscuro</span>
                     </button>
 
+                    <!-- MENÚ DESPLEGABLE DE EXPORTACIÓN A EXCEL / CSV -->
+                    <div class="relative" id="export-dropdown-wrapper">
+                        <button type="button" onclick="toggleMenuExportar()"
+                            title="Descargar listado en CSV para Excel o Nómina"
+                            class="px-3.5 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 transition flex items-center gap-1.5 shadow-2xs">
+                            <span>📥</span>
+                            <span class="hidden sm:inline">Exportar</span>
+                            <span class="text-[9px] text-slate-400">▼</span>
+                        </button>
+
+                        <div id="menu-exportar"
+                            class="hidden absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-slate-200 py-2 z-50 text-xs">
+                            <div class="px-4 py-2 border-b border-slate-100 flex items-center justify-between">
+                                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Exportar CSV
+                                    (Excel)</span>
+                                <span
+                                    class="text-[10px] font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">UTF-8</span>
+                            </div>
+
+                            <button type="button" onclick="exportarCandidatosCSV('aprobados')"
+                                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center justify-between gap-2 transition">
+                                <div>
+                                    <p class="font-bold text-emerald-600 flex items-center gap-1">✓ Solo Aprobados</p>
+                                    <p class="text-[11px] text-slate-500">Listos para contratación y nómina</p>
+                                </div>
+                                <span id="exp-count-aprobados"
+                                    class="bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded-full text-[10px] shrink-0">0</span>
+                            </button>
+
+                            <button type="button" onclick="exportarCandidatosCSV('filtrados')"
+                                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center justify-between gap-2 transition border-t border-slate-100">
+                                <div>
+                                    <p class="font-bold text-slate-800 flex items-center gap-1">🔍 Vista actual filtrada
+                                    </p>
+                                    <p class="text-[11px] text-slate-500">Según área y búsqueda seleccionada</p>
+                                </div>
+                                <span id="exp-count-filtrados"
+                                    class="bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded-full text-[10px] shrink-0">0</span>
+                            </button>
+
+                            <button type="button" onclick="exportarCandidatosCSV('todos')"
+                                class="w-full text-left px-4 py-2.5 hover:bg-slate-50 flex items-center justify-between gap-2 transition border-t border-slate-100">
+                                <div>
+                                    <p class="font-bold text-slate-800 flex items-center gap-1">📊 Base de datos
+                                        completa</p>
+                                    <p class="text-[11px] text-slate-500">Todos los candidatos registrados</p>
+                                </div>
+                                <span id="exp-count-todos"
+                                    class="bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded-full text-[10px] shrink-0">0</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <span
-                        class="text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full font-medium flex items-center gap-1.5">
+                        class="hidden md:flex text-xs text-emerald-600 bg-emerald-50 px-2.5 py-1.5 rounded-full font-medium items-center gap-1.5">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> En vivo
                     </span>
+
                     <button onclick="abrirModalNuevo()"
-                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm flex items-center gap-2 transition">
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-xs sm:text-sm font-medium shadow-sm flex items-center gap-1.5 transition shrink-0">
                         <span>+ Añadir Candidato</span>
                     </button>
                 </div>
@@ -1393,7 +1441,7 @@
         </div>
     </div>
 
-    <!-- SCRIPTS DE FIREBASE AUTH + FIRESTORE + MODO OSCURO -->
+    <!-- SCRIPTS DE FIREBASE AUTH + FIRESTORE + EXPORTAR EXCEL/CSV -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -1417,6 +1465,7 @@
         let candidatosGlobal = [];
         let filtroPuestoActual = "Todos";
         let textoBusqueda = "";
+        let vistaActual = "kanban";
         let candidatoSeleccionadoId = null;
         let candidatoDescarteId = null;
         let candidatoAvanzarId = null;
@@ -1446,6 +1495,120 @@
         };
 
         sincronizarBotonesTema();
+
+        // ==========================================
+        // EXPORTACIÓN A EXCEL / CSV
+        // ==========================================
+        window.toggleMenuExportar = () => {
+            const menu = document.getElementById("menu-exportar");
+            menu.classList.toggle("hidden");
+        };
+
+        document.addEventListener("click", (e) => {
+            const wrapper = document.getElementById("export-dropdown-wrapper");
+            const menu = document.getElementById("menu-exportar");
+            if (wrapper && menu && !wrapper.contains(e.target)) {
+                menu.classList.add("hidden");
+            }
+        });
+
+        function filtrarCandidatosPorModo(modo) {
+            return candidatosGlobal.filter(c => {
+                const matchTexto = !textoBusqueda ||
+                    (c.nombre && c.nombre.toLowerCase().includes(textoBusqueda)) ||
+                    (c.puesto && c.puesto.toLowerCase().includes(textoBusqueda)) ||
+                    (c.telefono && c.telefono.includes(textoBusqueda));
+
+                const puestoCand = c.puesto || "General";
+                const matchPuesto = filtroPuestoActual === "Todos" || puestoCand === filtroPuestoActual;
+
+                if (modo === "aprobados") {
+                    return c.estatus === "aprobado" && matchTexto && matchPuesto;
+                }
+                if (modo === "filtrados") {
+                    if (vistaActual === "descartados") {
+                        return c.estatus === "descartado" && matchTexto;
+                    }
+                    return c.estatus !== "descartado" && matchTexto && matchPuesto;
+                }
+                return true; // 'todos'
+            });
+        }
+
+        function escaparCeldaCSV(valor) {
+            if (valor === null || valor === undefined) return '""';
+            const limpio = String(valor).replace(/\r?\n|\r/g, " ").replace(/"/g, '""');
+            return `"${limpio}"`;
+        }
+
+        window.exportarCandidatosCSV = (modo) => {
+            const menu = document.getElementById("menu-exportar");
+            if (menu) menu.classList.add("hidden");
+
+            const lista = filtrarCandidatosPorModo(modo);
+            if (lista.length === 0) {
+                alert("No hay candidatos en esa categoría o filtro para descargar.");
+                return;
+            }
+
+            const mapaEstatus = {
+                nuevo: "Nuevo Postulante",
+                entrevista: "En Entrevista",
+                aprobado: "Aprobado / Contratación",
+                descartado: "No Continúa"
+            };
+
+            const encabezados = [
+                "Nombre Completo",
+                "Teléfono",
+                "Puesto / Área",
+                "Estatus",
+                "Sub-etapa",
+                "Experiencia",
+                "Disponibilidad",
+                "Evaluador Asignado",
+                "Fecha de Cita",
+                "Sede / Lugar",
+                "Notas RH",
+                "Motivo de Descarte"
+            ];
+
+            const filas = lista.map(c => {
+                const tel = c.telefono ? String(c.telefono).trim() : "";
+                const telFormatoExcel = tel && !tel.startsWith("+") ? `+${tel}` : tel;
+
+                return [
+                    escaparCeldaCSV(c.nombre || "Sin nombre"),
+                    escaparCeldaCSV(telFormatoExcel),
+                    escaparCeldaCSV(c.puesto || "General"),
+                    escaparCeldaCSV(mapaEstatus[c.estatus || "nuevo"] || c.estatus),
+                    escaparCeldaCSV(c.sub_etapa || ""),
+                    escaparCeldaCSV(c.experiencia || ""),
+                    escaparCeldaCSV(c.disponibilidad || ""),
+                    escaparCeldaCSV(c.evaluador_asignado || ""),
+                    escaparCeldaCSV(c.cita_fecha || ""),
+                    escaparCeldaCSV(c.cita_lugar || ""),
+                    escaparCeldaCSV(c.notas_rh || ""),
+                    escaparCeldaCSV(c.motivo_descarte || "")
+                ].join(",");
+            });
+
+            // Agregar BOM (\uFEFF) para compatibilidad directa con acentos en Excel
+            const contenidoCSV = "\uFEFF" + [encabezados.map(escaparCeldaCSV).join(","), ...filas].join("\r\n");
+            const blob = new Blob([contenidoCSV], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+
+            const fechaHoy = new Date().toISOString().split("T")[0];
+            const etiquetaArchivo = modo === "aprobados" ? "Aprobados_Nomina" : (modo === "filtrados" ? "Filtrados" : "Base_Completa");
+
+            const enlace = document.createElement("a");
+            enlace.href = url;
+            enlace.download = `Apli_${etiquetaArchivo}_${fechaHoy}.csv`;
+            document.body.appendChild(enlace);
+            enlace.click();
+            document.body.removeChild(enlace);
+            URL.revokeObjectURL(url);
+        };
 
         // Áreas por defecto para la sección de Ajustes
         let areasConfig = [
@@ -1842,6 +2005,14 @@
             document.getElementById("count-entrevista").textContent = cEntrevista;
             document.getElementById("count-aprobado").textContent = cAprobado;
             document.getElementById("badge-descartados").textContent = cDescartado;
+
+            // Actualizar contadores en el menú de exportación
+            const expAprobados = document.getElementById("exp-count-aprobados");
+            const expFiltrados = document.getElementById("exp-count-filtrados");
+            const expTodos = document.getElementById("exp-count-todos");
+            if (expAprobados) expAprobados.textContent = filtrarCandidatosPorModo("aprobados").length;
+            if (expFiltrados) expFiltrados.textContent = filtrarCandidatosPorModo("filtrados").length;
+            if (expTodos) expTodos.textContent = candidatosGlobal.length;
         }
 
         function crearTarjetaHTML(c, estatus) {
@@ -2145,6 +2316,7 @@
 
         // NAVEGACIÓN ENTRE TABLERO KANBAN, DESCARTADOS Y AJUSTES
         window.cambiarVista = (vista) => {
+            vistaActual = vista;
             const kanban = document.getElementById("vista-kanban");
             const desc = document.getElementById("vista-descartados");
             const ajustes = document.getElementById("vista-ajustes");
@@ -2198,6 +2370,8 @@
                 btnSideAjustes.className = "text-xs font-semibold text-indigo-700 bg-indigo-100/80 py-1.5 px-2 rounded-lg transition flex items-center justify-center gap-1.5 border border-indigo-200";
                 renderizarAreasAjustes();
             }
+
+            renderizarTablero();
         };
 
         window.abrirModalDetalle = (id) => {
