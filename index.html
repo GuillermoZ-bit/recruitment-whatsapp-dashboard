@@ -502,7 +502,86 @@
                     </button>
                 </div>
 
-                <div class="flex flex-wrap items-center gap-2 mb-6" id="filtros-puestos"></div>
+                <!-- PÍLDORAS DE FILTRO POR PUESTO -->
+                <div class="flex flex-wrap items-center gap-2 mb-5" id="filtros-puestos"></div>
+
+                <!-- ========================================== -->
+                <!-- BARRA SUPERIOR DE KPIs EN TIEMPO REAL      -->
+                <!-- ========================================== -->
+                <div id="barra-kpis" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <!-- KPI 1: Postulantes Activos -->
+                    <div
+                        class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex items-center justify-between gap-3">
+                        <div>
+                            <span
+                                class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Postulantes
+                                Activos</span>
+                            <div class="flex items-baseline gap-2 mt-1">
+                                <span id="kpi-total-activos" class="text-2xl font-extrabold text-slate-900">0</span>
+                                <span id="kpi-detalle-aprobados"
+                                    class="text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">0
+                                    aprobados</span>
+                            </div>
+                        </div>
+                        <div
+                            class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-lg shrink-0">
+                            👥
+                        </div>
+                    </div>
+
+                    <!-- KPI 2: Tasa de Avance a Entrevista -->
+                    <div
+                        class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex items-center justify-between gap-3">
+                        <div>
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Tasa de
+                                Avance Global</span>
+                            <div class="flex items-baseline gap-2 mt-1">
+                                <span id="kpi-tasa-avance" class="text-2xl font-extrabold text-slate-900">0%</span>
+                                <span id="kpi-conteo-entrevistas"
+                                    class="text-[11px] font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">0
+                                    en entrevista</span>
+                            </div>
+                        </div>
+                        <div
+                            class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg shrink-0">
+                            📈
+                        </div>
+                    </div>
+
+                    <!-- KPI 3: Próxima Entrevista Agendada -->
+                    <div
+                        class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex items-center justify-between gap-3">
+                        <div class="overflow-hidden">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Próxima
+                                Entrevista</span>
+                            <p id="kpi-proxima-nombre" class="text-sm font-bold text-slate-900 truncate mt-1">Sin citas
+                                agendadas</p>
+                            <p id="kpi-proxima-horario" class="text-[11px] text-slate-500 truncate mt-0.5">Avanza un
+                                candidato para agendar</p>
+                        </div>
+                        <div
+                            class="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center text-lg shrink-0">
+                            📅
+                        </div>
+                    </div>
+
+                    <!-- KPI 4: Motivo de Descarte más Frecuente -->
+                    <div
+                        class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex items-center justify-between gap-3">
+                        <div class="overflow-hidden">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block">Top Motivo
+                                Descarte</span>
+                            <p id="kpi-motivo-top" class="text-sm font-bold text-slate-900 truncate mt-1">Sin descartes
+                                aún</p>
+                            <p id="kpi-motivo-count" class="text-[11px] text-rose-600 font-medium truncate mt-0.5">0
+                                candidatos archivados</p>
+                        </div>
+                        <div
+                            class="w-10 h-10 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-lg shrink-0">
+                            📊
+                        </div>
+                    </div>
+                </div>
 
                 <!-- VISTA 1: TABLERO KANBAN -->
                 <div id="vista-kanban" class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
@@ -1441,7 +1520,7 @@
         </div>
     </div>
 
-    <!-- SCRIPTS DE FIREBASE AUTH + FIRESTORE + EXPORTAR EXCEL/CSV -->
+    <!-- SCRIPTS DE FIREBASE AUTH + FIRESTORE + KPIs + EXPORTAR EXCEL -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -1497,6 +1576,67 @@
         sincronizarBotonesTema();
 
         // ==========================================
+        // CÁLCULO DINÁMICO DE BARRA DE KPIs
+        // ==========================================
+        function actualizarKPIs() {
+            const total = candidatosGlobal.length;
+            const activos = candidatosGlobal.filter(c => c.estatus !== 'descartado');
+            const enEntrevista = candidatosGlobal.filter(c => c.estatus === 'entrevista');
+            const aprobados = candidatosGlobal.filter(c => c.estatus === 'aprobado');
+            const descartados = candidatosGlobal.filter(c => c.estatus === 'descartado');
+
+            // 1. Postulantes Activos
+            const elActivos = document.getElementById("kpi-total-activos");
+            const elDetAprob = document.getElementById("kpi-detalle-aprobados");
+            if (elActivos) elActivos.textContent = activos.length;
+            if (elDetAprob) elDetAprob.textContent = `${aprobados.length} aprobados`;
+
+            // 2. Tasa de Avance Global (En entrevista + Aprobados sobre el total de postulantes)
+            const avanzados = enEntrevista.length + aprobados.length;
+            const tasa = total > 0 ? Math.round((avanzados / total) * 100) : 0;
+            const elTasa = document.getElementById("kpi-tasa-avance");
+            const elContEnt = document.getElementById("kpi-conteo-entrevistas");
+            if (elTasa) elTasa.textContent = `${tasa}%`;
+            if (elContEnt) elContEnt.textContent = `${enEntrevista.length} en entrevista`;
+
+            // 3. Próxima Entrevista Agendada
+            const conCita = activos.find(c => c.cita_fecha && String(c.cita_fecha).trim() !== "");
+            const elProxNom = document.getElementById("kpi-proxima-nombre");
+            const elProxHor = document.getElementById("kpi-proxima-horario");
+            if (conCita) {
+                if (elProxNom) elProxNom.textContent = conCita.nombre || "Candidato";
+                if (elProxHor) elProxHor.textContent = `${conCita.cita_fecha}${conCita.cita_lugar ? ` • ${conCita.cita_lugar}` : ''}`;
+            } else {
+                if (elProxNom) elProxNom.textContent = "Sin citas agendadas";
+                if (elProxHor) elProxHor.textContent = "Avanza un candidato para agendar";
+            }
+
+            // 4. Motivo de Descarte más frecuente
+            const elMotivoTop = document.getElementById("kpi-motivo-top");
+            const elMotivoCount = document.getElementById("kpi-motivo-count");
+            if (descartados.length === 0) {
+                if (elMotivoTop) elMotivoTop.textContent = "Sin descartes aún";
+                if (elMotivoCount) elMotivoCount.textContent = "0 candidatos archivados";
+            } else {
+                const conteoMotivos = {};
+                descartados.forEach(c => {
+                    const m = c.motivo_descarte || "Motivo general";
+                    conteoMotivos[m] = (conteoMotivos[m] || 0) + 1;
+                });
+                let topMotivo = "Motivo general";
+                let maxRepeticiones = 0;
+                Object.entries(conteoMotivos).forEach(([motivo, cant]) => {
+                    if (cant > maxRepeticiones) {
+                        maxRepeticiones = cant;
+                        topMotivo = motivo;
+                    }
+                });
+                if (elMotivoTop) elMotivoTop.textContent = topMotivo;
+                if (elMotivoCount) elMotivoCount.textContent = `${maxRepeticiones} de ${descartados.length} descartados`;
+            }
+        }
+
+        // ==========================================
         // EXPORTACIÓN A EXCEL / CSV
         // ==========================================
         window.toggleMenuExportar = () => {
@@ -1531,7 +1671,7 @@
                     }
                     return c.estatus !== "descartado" && matchTexto && matchPuesto;
                 }
-                return true; // 'todos'
+                return true;
             });
         }
 
@@ -1593,7 +1733,6 @@
                 ].join(",");
             });
 
-            // Agregar BOM (\uFEFF) para compatibilidad directa con acentos en Excel
             const contenidoCSV = "\uFEFF" + [encabezados.map(escaparCeldaCSV).join(","), ...filas].join("\r\n");
             const blob = new Blob([contenidoCSV], { type: "text/csv;charset=utf-8;" });
             const url = URL.createObjectURL(blob);
@@ -2013,6 +2152,9 @@
             if (expAprobados) expAprobados.textContent = filtrarCandidatosPorModo("aprobados").length;
             if (expFiltrados) expFiltrados.textContent = filtrarCandidatosPorModo("filtrados").length;
             if (expTodos) expTodos.textContent = candidatosGlobal.length;
+
+            // Actualizar la barra superior de KPIs
+            actualizarKPIs();
         }
 
         function crearTarjetaHTML(c, estatus) {
@@ -2321,6 +2463,7 @@
             const desc = document.getElementById("vista-descartados");
             const ajustes = document.getElementById("vista-ajustes");
             const filtros = document.getElementById("filtros-puestos");
+            const kpis = document.getElementById("barra-kpis");
             const encabezado = document.getElementById("encabezado-operativo");
             const titulo = document.getElementById("titulo-vista");
             const subtitulo = document.getElementById("subtitulo-vista");
@@ -2339,6 +2482,7 @@
             if (vista === 'kanban') {
                 kanban.classList.remove("hidden");
                 filtros.classList.remove("hidden");
+                kpis.classList.remove("hidden");
                 encabezado.classList.remove("hidden");
                 desc.classList.add("hidden");
                 ajustes.classList.add("hidden");
@@ -2350,6 +2494,7 @@
             } else if (vista === 'descartados') {
                 kanban.classList.add("hidden");
                 filtros.classList.add("hidden");
+                kpis.classList.remove("hidden");
                 ajustes.classList.add("hidden");
                 encabezado.classList.remove("hidden");
                 desc.classList.remove("hidden");
@@ -2361,6 +2506,7 @@
             } else if (vista === 'ajustes') {
                 kanban.classList.add("hidden");
                 filtros.classList.add("hidden");
+                kpis.classList.add("hidden");
                 desc.classList.add("hidden");
                 encabezado.classList.add("hidden");
                 btnVaciar.classList.add("hidden");
