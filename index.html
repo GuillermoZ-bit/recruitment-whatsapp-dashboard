@@ -40,6 +40,27 @@
         }
 
         /* ==========================================
+           ESTILOS DE DRAG & DROP (ARRASTRAR Y SOLTAR)
+           ========================================== */
+        .dragging-card {
+            opacity: 0.45 !important;
+            transform: scale(0.97);
+            border: 2px dashed #6366f1 !important;
+        }
+
+        .drop-zone-active {
+            border-color: #6366f1 !important;
+            background-color: rgba(99, 102, 241, 0.08) !important;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.18) !important;
+        }
+
+        .drop-zone-danger-active {
+            border-color: #f43f5e !important;
+            background-color: rgba(244, 63, 94, 0.15) !important;
+            transform: scale(1.01);
+        }
+
+        /* ==========================================
            REGLAS GLOBALES DE MODO OSCURO
            ========================================== */
         html.dark body,
@@ -338,8 +359,11 @@
                         </svg>
                         Tablero Kanban
                     </button>
+                    <!-- El botón de No continúan también funciona como zona para soltar tarjetas y descartarlas -->
                     <button onclick="cambiarVista('descartados')" id="nav-descartados"
-                        class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition">
+                        ondragover="permitirSoltarPeligro(event, this)" ondragleave="salirZonaSoltarPeligro(this)"
+                        ondrop="soltarEnColumna(event, 'descartado', this)"
+                        class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition border border-transparent">
                         <div class="flex items-center gap-3">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -492,8 +516,8 @@
                             <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
                             <h1 class="text-2xl font-bold text-slate-900" id="titulo-vista">Flujo de Reclutamiento</h1>
                         </div>
-                        <p id="subtitulo-vista" class="text-sm text-slate-500 mt-0.5">Gestiona y toma decisiones sobre
-                            postulaciones activas de WhatsApp en tiempo real.</p>
+                        <p id="subtitulo-vista" class="text-sm text-slate-500 mt-0.5">Arrastra y suelta las tarjetas
+                            entre columnas para avanzar o descartar postulantes en tiempo real.</p>
                     </div>
                     <!-- Botón para vaciar todos los descartados de golpe -->
                     <button id="btn-vaciar-descartados" onclick="vaciarDescartados()"
@@ -509,7 +533,6 @@
                 <!-- BARRA SUPERIOR DE KPIs EN TIEMPO REAL      -->
                 <!-- ========================================== -->
                 <div id="barra-kpis" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                    <!-- KPI 1: Postulantes Activos -->
                     <div
                         class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex items-center justify-between gap-3">
                         <div>
@@ -529,7 +552,6 @@
                         </div>
                     </div>
 
-                    <!-- KPI 2: Tasa de Avance a Entrevista -->
                     <div
                         class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex items-center justify-between gap-3">
                         <div>
@@ -548,7 +570,6 @@
                         </div>
                     </div>
 
-                    <!-- KPI 3: Próxima Entrevista Agendada -->
                     <div
                         class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex items-center justify-between gap-3">
                         <div class="overflow-hidden">
@@ -565,7 +586,6 @@
                         </div>
                     </div>
 
-                    <!-- KPI 4: Motivo de Descarte más Frecuente -->
                     <div
                         class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex items-center justify-between gap-3">
                         <div class="overflow-hidden">
@@ -583,9 +603,23 @@
                     </div>
                 </div>
 
-                <!-- VISTA 1: TABLERO KANBAN -->
+                <!-- ========================================== -->
+                <!-- ZONA RÁPIDA DE DESCARTE (DRAG & DROP)      -->
+                <!-- Se muestra automáticamente al arrastrar    -->
+                <!-- ========================================== -->
+                <div id="zona-drop-descarte" ondragover="permitirSoltarPeligro(event, this)"
+                    ondragleave="salirZonaSoltarPeligro(this)" ondrop="soltarEnColumna(event, 'descartado', this)"
+                    class="hidden mb-5 p-3.5 rounded-2xl border-2 border-dashed border-rose-300 bg-rose-50/70 text-rose-600 text-xs font-bold items-center justify-center gap-2 transition-all">
+                    <span>🗑️</span>
+                    <span>Suelta la tarjeta aquí para descartar al candidato y registrar el motivo</span>
+                </div>
+
+                <!-- VISTA 1: TABLERO KANBAN CON SOPORTE DRAG & DROP -->
                 <div id="vista-kanban" class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                    <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
+                    <!-- Columna 1: Nuevos Postulantes -->
+                    <div id="drop-col-nuevo" ondragover="permitirSoltar(event, this)"
+                        ondragleave="salirZonaSoltar(this)" ondrop="soltarEnColumna(event, 'nuevo', this)"
+                        class="bg-slate-100/70 rounded-xl p-4 border-2 border-slate-200/60 transition-all">
                         <div class="flex items-center justify-between mb-4 px-1">
                             <div class="flex items-center gap-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-indigo-600"></span>
@@ -594,10 +628,13 @@
                             <span id="count-nuevo"
                                 class="bg-white text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm border border-slate-200/60">0</span>
                         </div>
-                        <div id="col-nuevo" class="space-y-3 min-h-[200px]"></div>
+                        <div id="col-nuevo" class="space-y-3 min-h-[240px]"></div>
                     </div>
 
-                    <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
+                    <!-- Columna 2: En Entrevista -->
+                    <div id="drop-col-entrevista" ondragover="permitirSoltar(event, this)"
+                        ondragleave="salirZonaSoltar(this)" ondrop="soltarEnColumna(event, 'entrevista', this)"
+                        class="bg-slate-100/70 rounded-xl p-4 border-2 border-slate-200/60 transition-all">
                         <div class="flex items-center justify-between mb-4 px-1">
                             <div class="flex items-center gap-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
@@ -606,10 +643,13 @@
                             <span id="count-entrevista"
                                 class="bg-white text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm border border-slate-200/60">0</span>
                         </div>
-                        <div id="col-entrevista" class="space-y-3 min-h-[200px]"></div>
+                        <div id="col-entrevista" class="space-y-3 min-h-[240px]"></div>
                     </div>
 
-                    <div class="bg-slate-100/70 rounded-xl p-4 border border-slate-200/60">
+                    <!-- Columna 3: Aprobados / Continúan -->
+                    <div id="drop-col-aprobado" ondragover="permitirSoltar(event, this)"
+                        ondragleave="salirZonaSoltar(this)" ondrop="soltarEnColumna(event, 'aprobado', this)"
+                        class="bg-slate-100/70 rounded-xl p-4 border-2 border-slate-200/60 transition-all">
                         <div class="flex items-center justify-between mb-4 px-1">
                             <div class="flex items-center gap-2">
                                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
@@ -618,7 +658,7 @@
                             <span id="count-aprobado"
                                 class="bg-white text-slate-700 text-xs font-bold px-2.5 py-0.5 rounded-full shadow-sm border border-slate-200/60">0</span>
                         </div>
-                        <div id="col-aprobado" class="space-y-3 min-h-[200px]"></div>
+                        <div id="col-aprobado" class="space-y-3 min-h-[240px]"></div>
                     </div>
                 </div>
 
@@ -1520,7 +1560,7 @@
         </div>
     </div>
 
-    <!-- SCRIPTS DE FIREBASE AUTH + FIRESTORE + KPIs + EXPORTAR EXCEL -->
+    <!-- SCRIPTS DE FIREBASE AUTH + FIRESTORE + DRAG & DROP + KPIs + EXPORTAR EXCEL -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -1548,6 +1588,7 @@
         let candidatoSeleccionadoId = null;
         let candidatoDescarteId = null;
         let candidatoAvanzarId = null;
+        let candidatoArrastradoId = null;
         let usuarioActualNombre = "RH";
         let usuarioActualEmail = "";
         let fotoPerfilBase64 = "";
@@ -1576,6 +1617,96 @@
         sincronizarBotonesTema();
 
         // ==========================================
+        // LÓGICA DE DRAG & DROP (ARRASTRAR Y SOLTAR)
+        // ==========================================
+        window.iniciarArrastre = (event, id) => {
+            candidatoArrastradoId = id;
+            event.dataTransfer.setData("text/plain", id);
+            event.dataTransfer.effectAllowed = "move";
+
+            const card = event.currentTarget;
+            setTimeout(() => card.classList.add("dragging-card"), 0);
+
+            // Mostrar franja rápida de descarte mientras se arrastra
+            const zonaDescarte = document.getElementById("zona-drop-descarte");
+            if (zonaDescarte && vistaActual === "kanban") {
+                zonaDescarte.classList.remove("hidden");
+                zonaDescarte.classList.add("flex");
+            }
+        };
+
+        window.finalizarArrastre = (event) => {
+            event.currentTarget.classList.remove("dragging-card");
+            candidatoArrastradoId = null;
+
+            // Ocultar franja de descarte y limpiar resaltados
+            const zonaDescarte = document.getElementById("zona-drop-descarte");
+            if (zonaDescarte) {
+                zonaDescarte.classList.add("hidden");
+                zonaDescarte.classList.remove("flex", "drop-zone-danger-active");
+            }
+            document.querySelectorAll(".drop-zone-active").forEach(el => el.classList.remove("drop-zone-active"));
+            document.querySelectorAll(".drop-zone-danger-active").forEach(el => el.classList.remove("drop-zone-danger-active"));
+        };
+
+        window.permitirSoltar = (event, elementoColumna) => {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = "move";
+            elementoColumna.classList.add("drop-zone-active");
+        };
+
+        window.salirZonaSoltar = (elementoColumna) => {
+            elementoColumna.classList.remove("drop-zone-active");
+        };
+
+        window.permitirSoltarPeligro = (event, elemento) => {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = "move";
+            elemento.classList.add("drop-zone-danger-active");
+        };
+
+        window.salirZonaSoltarPeligro = (elemento) => {
+            elemento.classList.remove("drop-zone-danger-active");
+        };
+
+        window.soltarEnColumna = async (event, estatusDestino, elementoColumna) => {
+            event.preventDefault();
+            elementoColumna.classList.remove("drop-zone-active", "drop-zone-danger-active");
+
+            const zonaDescarte = document.getElementById("zona-drop-descarte");
+            if (zonaDescarte) {
+                zonaDescarte.classList.add("hidden");
+                zonaDescarte.classList.remove("flex", "drop-zone-danger-active");
+            }
+
+            const id = event.dataTransfer.getData("text/plain") || candidatoArrastradoId;
+            if (!id) return;
+
+            const c = candidatosGlobal.find(item => item.id === id);
+            if (!c) return;
+
+            const estatusActual = c.estatus || "nuevo";
+            if (estatusActual === estatusDestino) return;
+
+            // 1. Si se suelta en zona de descarte -> abre modal de motivo de descarte
+            if (estatusDestino === "descartado") {
+                abrirModalDescarte(id);
+                return;
+            }
+
+            // 2. Si se suelta en Entrevista o Aprobados -> abre modal de avance preseleccionando esa columna
+            if (estatusDestino === "entrevista" || estatusDestino === "aprobado") {
+                abrirModalAvanzar(id, estatusDestino);
+                return;
+            }
+
+            // 3. Si se regresa a Nuevos Postulantes -> actualiza a 'nuevo' en tiempo real
+            if (estatusDestino === "nuevo") {
+                await cambiarEstatus(id, "nuevo");
+            }
+        };
+
+        // ==========================================
         // CÁLCULO DINÁMICO DE BARRA DE KPIs
         // ==========================================
         function actualizarKPIs() {
@@ -1585,13 +1716,11 @@
             const aprobados = candidatosGlobal.filter(c => c.estatus === 'aprobado');
             const descartados = candidatosGlobal.filter(c => c.estatus === 'descartado');
 
-            // 1. Postulantes Activos
             const elActivos = document.getElementById("kpi-total-activos");
             const elDetAprob = document.getElementById("kpi-detalle-aprobados");
             if (elActivos) elActivos.textContent = activos.length;
             if (elDetAprob) elDetAprob.textContent = `${aprobados.length} aprobados`;
 
-            // 2. Tasa de Avance Global (En entrevista + Aprobados sobre el total de postulantes)
             const avanzados = enEntrevista.length + aprobados.length;
             const tasa = total > 0 ? Math.round((avanzados / total) * 100) : 0;
             const elTasa = document.getElementById("kpi-tasa-avance");
@@ -1599,7 +1728,6 @@
             if (elTasa) elTasa.textContent = `${tasa}%`;
             if (elContEnt) elContEnt.textContent = `${enEntrevista.length} en entrevista`;
 
-            // 3. Próxima Entrevista Agendada
             const conCita = activos.find(c => c.cita_fecha && String(c.cita_fecha).trim() !== "");
             const elProxNom = document.getElementById("kpi-proxima-nombre");
             const elProxHor = document.getElementById("kpi-proxima-horario");
@@ -1611,7 +1739,6 @@
                 if (elProxHor) elProxHor.textContent = "Avanza un candidato para agendar";
             }
 
-            // 4. Motivo de Descarte más frecuente
             const elMotivoTop = document.getElementById("kpi-motivo-top");
             const elMotivoCount = document.getElementById("kpi-motivo-count");
             if (descartados.length === 0) {
@@ -2145,7 +2272,6 @@
             document.getElementById("count-aprobado").textContent = cAprobado;
             document.getElementById("badge-descartados").textContent = cDescartado;
 
-            // Actualizar contadores en el menú de exportación
             const expAprobados = document.getElementById("exp-count-aprobados");
             const expFiltrados = document.getElementById("exp-count-filtrados");
             const expTodos = document.getElementById("exp-count-todos");
@@ -2153,7 +2279,6 @@
             if (expFiltrados) expFiltrados.textContent = filtrarCandidatosPorModo("filtrados").length;
             if (expTodos) expTodos.textContent = candidatosGlobal.length;
 
-            // Actualizar la barra superior de KPIs
             actualizarKPIs();
         }
 
@@ -2161,16 +2286,20 @@
             const colorTag = getColorPuesto(c.puesto);
             const textoBotonContinuar = estatus === 'aprobado' ? '✓ Contratado' : '✓ Continuar';
             const nombreSeguro = (c.nombre || 'este candidato').replace(/'/g, "\\'");
+            const atributosDrag = estatus !== 'descartado'
+                ? `draggable="true" ondragstart="iniciarArrastre(event, '${c.id}')" ondragend="finalizarArrastre(event)"`
+                : '';
 
             return `
-                <div class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs hover:shadow-md transition group">
+                <div ${atributosDrag} class="bg-white p-4 rounded-xl border border-slate-200/80 shadow-xs hover:shadow-md transition group ${estatus !== 'descartado' ? 'cursor-grab active:cursor-grabbing' : ''}">
                     <div class="flex justify-between items-start gap-2 mb-2">
                         <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-md ${colorTag}">
                             ${c.puesto || 'General'}
                         </span>
-                        <div class="flex items-center gap-1">
+                        <div class="flex items-center gap-1.5">
                             ${c.sub_etapa && estatus !== 'descartado' ? `<span class="text-[10px] font-semibold bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded border border-indigo-100">${c.sub_etapa}</span>` : ''}
                             ${c.notas_rh ? '<span title="Tiene notas de RH" class="text-xs bg-amber-50 text-amber-600 px-1.5 py-0.5 rounded border border-amber-200">📝</span>' : ''}
+                            ${estatus !== 'descartado' ? '<span title="Arrastra para mover de columna" class="text-slate-300 group-hover:text-slate-400 text-xs select-none">⠿</span>' : ''}
                         </div>
                     </div>
 
@@ -2281,8 +2410,8 @@
             }
         };
 
-        // LÓGICA DEL MODAL DE AVANCE DE ETAPA
-        window.abrirModalAvanzar = (id) => {
+        // LÓGICA DEL MODAL DE AVANCE DE ETAPA (Soporta preselección desde Drag & Drop)
+        window.abrirModalAvanzar = (id, columnaForzada = null) => {
             const c = candidatosGlobal.find(item => item.id === id);
             if (!c) return;
             candidatoAvanzarId = id;
@@ -2305,7 +2434,11 @@
             document.getElementById("avz-card-rol").textContent = puesto;
             document.getElementById("avz-card-fase").textContent = mapaFases[c.estatus || 'nuevo'] || 'Nuevos Postulantes';
 
-            if ((c.estatus || 'nuevo') === 'nuevo') {
+            if (columnaForzada === 'entrevista') {
+                document.getElementById("radio-etapa-tecnica").checked = true;
+            } else if (columnaForzada === 'aprobado') {
+                document.getElementById("radio-etapa-oferta").checked = true;
+            } else if ((c.estatus || 'nuevo') === 'nuevo') {
                 document.getElementById("radio-etapa-tecnica").checked = true;
             } else {
                 document.getElementById("radio-etapa-oferta").checked = true;
@@ -2475,7 +2608,7 @@
             const btnSideAjustes = document.getElementById("btn-sidebar-ajustes");
 
             navKanban.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition";
-            navDesc.className = "w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition";
+            navDesc.className = "w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition border border-transparent";
             navAjustes.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 hover:bg-slate-50 font-medium text-sm transition";
             btnSideAjustes.className = "text-xs font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 py-1.5 px-2 rounded-lg transition flex items-center justify-center gap-1.5 bg-white border border-slate-200/80 shadow-2xs";
 
@@ -2489,7 +2622,7 @@
                 btnVaciar.classList.add("hidden");
                 btnVaciar.classList.remove("flex");
                 titulo.textContent = "Flujo de Reclutamiento";
-                subtitulo.textContent = "Gestiona y toma decisiones sobre postulaciones activas de WhatsApp en tiempo real.";
+                subtitulo.textContent = "Arrastra y suelta las tarjetas entre columnas para avanzar o descartar postulantes en tiempo real.";
                 navKanban.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition";
             } else if (vista === 'descartados') {
                 kanban.classList.add("hidden");
@@ -2502,7 +2635,7 @@
                 btnVaciar.classList.add("flex");
                 titulo.textContent = "Candidatos que No Continúan";
                 subtitulo.textContent = "Restaura postulantes al flujo activo o elimínalos definitivamente para liberar espacio.";
-                navDesc.className = "w-full flex items-center justify-between px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition";
+                navDesc.className = "w-full flex items-center justify-between px-3 py-2.5 rounded-lg bg-indigo-50 text-indigo-700 font-medium text-sm transition border border-transparent";
             } else if (vista === 'ajustes') {
                 kanban.classList.add("hidden");
                 filtros.classList.add("hidden");
